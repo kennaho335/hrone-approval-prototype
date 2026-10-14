@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>待办审批详情页 · 雷佳俊的出差申请</title>
+  <style>
+    :root{--blue:#1677ff;--line:#e9edf3;--bg:#f5f7fb}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{overflow:hidden;color:#17263c;background:var(--bg);font:14px -apple-system,BlinkMacSystemFont,"Microsoft YaHei","Segoe UI",sans-serif}
+    button{font:inherit;cursor:pointer}
+    .page{height:100dvh;min-width:900px}
+    .topbar{height:52px;display:flex;align-items:center;border-bottom:1px solid #edf0f4;background:#fff}
+    .brand{margin-left:28px;width:114px;color:#0f4c99;font-size:21px;font-weight:800;letter-spacing:1px}
+    .brand b{color:#ffaf00}
+    .home{font-size:19px;color:#7f8b99}
+    .all{margin-left:16px;padding:5px 11px;border:1px solid #dfe4ea;border-radius:3px;font-size:12px}
+    .tools{display:flex;align-items:center;gap:14px;margin-left:auto;padding-right:18px;color:#6d7886}
+    .tool{position:relative;width:31px;height:31px;display:grid;place-items:center;border-radius:50%;box-shadow:0 1px 8px #00000012}
+    .tool[data-count]:before{content:attr(data-count);position:absolute;top:-9px;right:-11px;min-width:25px;padding:1px 4px;border-radius:10px;background:#ff4d4f;color:#fff;text-align:center;font-size:11px}
+    .account{padding:7px 11px;border-radius:16px;box-shadow:0 1px 8px #00000012;color:#7d8794;font-size:12px;white-space:nowrap}
+    .sidebar{position:absolute;top:52px;bottom:0;left:0;width:220px;padding-top:4px;border-right:1px solid var(--line);background:#fff}
+    .menu{display:flex;align-items:center;height:43px;margin:0 4px;padding:0 23px;border-radius:8px;color:#26364a;white-space:nowrap}
+    .menu.active{color:var(--blue);background:#eef4ff}
+    .menu.sub{height:44px;padding-left:54px}
+    .menu.group{margin-top:6px}
+    .chev{margin-left:auto}
+    .workspace{position:absolute;top:52px;left:220px;right:0;bottom:0;min-width:0}
+    .crumb{height:42px;display:flex;align-items:center;gap:28px;margin:0 10px;padding:0 18px;background:#f6f8fc;font-size:12px}
+    .crumb .current{align-self:stretch;display:flex;align-items:center;border-bottom:2px solid var(--blue);color:var(--blue);white-space:nowrap}
+    .title-card{height:101px;display:flex;align-items:center;margin:9px 10px;padding:0 24px;border:1px solid #eef1f5;border-radius:8px;background:#fff}
+    .avatar{flex:none;width:54px;height:54px;display:grid;place-items:center;border:2px solid #ffa322;border-radius:50%;color:#ff9400;font-size:20px}
+    .title-copy{min-width:0;margin-left:14px}
+    .title-line{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:700;white-space:nowrap}
+    .status{padding:3px 8px;border:1px solid #91caff;border-radius:3px;color:var(--blue);background:#eef7ff;font-size:12px;font-weight:400}
+    .meta{display:flex;gap:15px;margin-top:8px;color:#5b6877;font-size:12px;white-space:nowrap}
+    .title-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+    .title-action{height:31px;padding:0 12px;border:1px solid var(--blue);border-radius:6px;color:var(--blue);background:#fff;white-space:nowrap;font-size:12px}
+    .title-action.primary{color:#fff;background:var(--blue)}
+    .body-grid{position:absolute;inset:163px 10px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,440px);gap:10px}
+    .form-pane,.record-pane{min-height:0;overflow:auto;scrollbar-color:#919ba8 transparent;scrollbar-width:thin}
+    .panel{margin-bottom:10px;overflow:hidden;border-radius:8px;background:#fff}
+    .panel-head{height:46px;display:flex;align-items:center;padding:0 17px;border-bottom:1px solid var(--line);font-size:16px;font-weight:700}
+    .panel-head .caret{margin-right:13px;font-size:11px}
+    .employee-content{padding:18px 16px 30px}
+    .field-label{display:block;margin:0 0 8px;color:#17263c;font-size:12px;font-weight:600}
+    .field-label.required:before{content:"*";margin-right:3px;color:#ff4d4f}
+    .value{min-height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border:1px solid #edf0f4;border-radius:4px;color:#17325a;background:#fbfbfc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .value .down{margin-left:10px;color:#b8c1cb}
+    .employee-field{width:50%;max-width:590px}
+    .employee-meta{display:flex;align-items:center;gap:0;min-height:32px;margin-top:10px;padding:0 8px;border:1px solid #d9dfe7;background:#fbfbfc;color:#566a87;font-size:12px;white-space:nowrap;overflow:hidden}
+    .employee-meta span{padding:0 14px;border-right:1px solid #cbd5e1}
+    .employee-meta span:first-child{padding-left:0}
+    .employee-meta span:last-child{border:0;overflow:hidden;text-overflow:ellipsis}
+    .fields{display:grid;grid-template-columns:1fr 1fr;gap:22px 12px;padding:18px 16px 28px}
+    .field{min-width:0}
+    .helper{margin-top:8px;color:#8b99ab;font-size:12px;line-height:18px}
+    .helper .more{float:right;color:var(--blue)}
+    .record-pane{border-radius:8px;background:#fff}
+    .record-title{height:55px;display:flex;align-items:center;padding:0 25px;border-bottom:1px solid var(--line);font-size:16px;font-weight:700}
+    .record-title .record-icon{margin-right:11px;color:var(--blue);font-size:20px}
+    .timeline{position:relative;padding:19px 24px 28px 50px}
+    .timeline:before{content:"";position:absolute;top:31px;bottom:0;left:28px;border-left:1px dashed #22bf58}
+    .record{position:relative;padding:0 0 23px}
+    .dot{position:absolute;top:6px;left:-28px;width:12px;height:12px;border:3px solid #fff;border-radius:50%;background:#1bbd52;box-shadow:0 0 0 1px #1bbd52}
+    .record.start .dot{background:#fff;box-shadow:0 0 0 3px #9ca7b2}
+    .record.pending .dot{background:#fff;box-shadow:0 0 0 1px var(--blue)}
+    .record-head{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+    .duration{margin-left:auto;color:#778392;font-size:12px;font-weight:400;white-space:nowrap}
+    .actor{display:flex;align-items:center;gap:9px;min-height:30px;margin-top:12px}
+    .actor-icon{flex:none;width:25px;height:25px;display:grid;place-items:center;border:1px solid #00bed6;border-radius:50%;color:#00bed6;font-size:12px}
+    .actor-icon.orange{border-color:#ff9c27;color:#ff9c27}
+    .actor-name{font-size:12px;line-height:18px}
+    .time{margin-left:auto;color:#8792a0;font-size:11px;text-align:right;line-height:17px}
+    .result{margin-top:12px;padding:8px;border-radius:5px;color:#00a870;background:#f6f8fa;font-size:12px;line-height:17px}
+    .result.neutral{color:#334760}
+    @media(max-width:1300px){.brand{margin-left:18px;width:105px}.tools{gap:7px;padding-right:10px}.account{display:none}.sidebar{width:164px}.workspace{left:164px}.body-grid{grid-template-columns:minmax(0,1fr) 330px}.title-card{padding:0 15px}.title-line{font-size:18px}.meta{gap:8px;font-size:10px}.fields{gap:15px 10px}.employee-field{width:70%}.employee-meta{font-size:10px;padding:0 5px}.employee-meta span{padding:0 7px}.timeline{padding-left:42px;padding-right:12px}.timeline:before{left:21px}.dot{left:-26px}.record-title{padding:0 15px}}
+    @media(max-width:1000px){.all{display:none}.title-action{padding:0 7px}.body-grid{grid-template-columns:minmax(420px,1fr) 300px}.meta{flex-wrap:wrap;row-gap:2px}.title-line{font-size:16px}.employee-field{width:100%}.record-head{font-size:12px}.time{font-size:10px}.actor-name,.result{font-size:11px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar"><div class="brand">HR<b>O</b>NE</div><div class="home">⌂</div><div class="all">🌐 全部菜单　⌄</div><div class="tools"><div class="tool">⌕</div><div class="tool">◎</div><div class="tool" data-count="110">✉</div><div class="tool" data-count="41">♧</div><div class="account">◉ 黄东升</div></div></header>
+    <aside class="sidebar" aria-label="业务导航">
+      <div class="menu active">▦　首页</div>
+      <div class="menu group">♧　审批通知中心 <span class="chev">⌃</span></div>
+      <div class="menu sub">·　我的待办</div>
+      <div class="menu sub">·　我的申请</div>
+      <div class="menu sub">·　我的通知</div>
+      <div class="menu group">▤　我的人事 <span class="chev">⌄</span></div>
+      <div class="menu">▣　我的假勤 <span class="chev">⌄</span></div>
+      <div class="menu">♧　我的团队 <span class="chev">⌄</span></div>
+      <div class="menu">⌁　绩效工作台 <span class="chev">⌄</span></div>
+    </aside>
+    <main class="workspace">
+      <nav class="crumb"><span>首页</span><span class="current">雷佳俊的出差申请</span></nav>
+      <section class="title-card">
+        <div class="avatar">黄</div>
+        <div class="title-copy">
+          <div class="title-line">雷佳俊的出差申请 <span class="status">审批中</span></div>
+          <div class="meta"><span>♙ 审批编号：P202609201749450032</span><span>♙ 发起人：黄东升(WX21197)</span><span>◷ 发起日期：2026/09/20</span></div>
+        </div>
+        <div class="title-actions"><button class="title-action primary" type="button">✓ 同意</button><button class="title-action" type="button">⊙ 查看流程图</button></div>
+      </section>
+      <div class="body-grid">
+        <div class="form-pane">
+          <section class="panel">
+            <div class="panel-head"><span class="caret">▲</span>员工信息</div>
+            <div class="employee-content">
+              <div class="employee-field"><label class="field-label required">员工</label><div class="value">雷佳俊 <span class="down">⌄</span></div></div>
+              <div class="employee-meta"><span>工号：zt20292</span><span>职位：三级组织职位1号</span><span>职级：P2-2</span><span>部门全称：WX/徐德志回归组织更新/徐德志二级组织更新/徐德志三级组织更新</span></div>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><span class="caret">▲</span>出差信息</div>
+            <div class="fields">
+              <div class="field"><label class="field-label">单据类型</label><div class="value">申请 <span class="down">⌄</span></div></div>
+              <div class="field"><label class="field-label">出差类型</label><div class="value">中国境内出差 <span class="down">⌄</span></div></div>
+              <div class="field"><label class="field-label">行政对接人</label><div class="value">雷佳俊(zt20292) <span class="down">⌄</span></div><div class="helper">国内员工请参考下面名单：<span class="more">展开</span><br>GF游月丽...</div></div>
+              <div class="field"><label class="field-label">是否公司预定酒店</label><div class="value">否 <span class="down">⌄</span></div><div class="helper">如住宿由对方单位、公司宿舍或亲友解决，请填否。后续住宿费用审批以出差申请流程中该项为判断标准。</div></div>
+              <div class="field"><label class="field-label">出差总时长(H)</label><div class="value">16</div></div>
+              <div class="field"><label class="field-label">出差总时长(天)</label><div class="value">2</div></div>
+              <div class="field"><label class="field-label">是否自己部门安排出差</label><div class="value">否 <span class="down">⌄</span></div><div class="helper">部门内部出差请选择“是”<br>因协助其他部门而出差，请选“否”</div></div>
+              <div class="field"><label class="field-label">出差费用承担部门对接人</label><div class="value">雷佳俊(zt20292) <span class="down">⌄</span></div><div class="helper">若非自己部门安排的出差，请填写对应的邀请人</div></div>
+            </div>
+          </section>
+        </div>
+        <aside class="record-pane" aria-label="审批记录">
+          <div class="record-title"><span class="record-icon">♧</span>审批记录</div>
+          <div class="timeline">
+            <article class="record start"><span class="dot"></span><div class="record-head">发起人</div><div class="actor"><span class="actor-icon">黄</span><span class="actor-name">黄东升<br>(WX21197)</span><span class="time">◷ 2026/09/20 17:49</span></div><div class="result">提交</div></article>
+            <article class="record"><span class="dot"></span><div class="record-head">双线上级</div><div class="time">◷ 2026/09/20 17:49~2026/09/20 17:49</div><div class="result neutral">自动完成,原因: 审批人为全时：自动跳过</div></article>
+            <article class="record"><span class="dot"></span><div class="record-head">直接上级 <span class="duration">⌛ 1分钟</span></div><div class="actor"><span class="actor-icon orange">z</span><span class="actor-name">zt22650</span><span class="time">◷ 2026/09/20 17:49~2026/09/20 17:50</span></div><div class="result">转交: CoreHR实施账号2(zt20292)</div></article>
+            <article class="record"><span class="dot"></span><div class="record-head">直接上级（转交） <span class="duration">⌛ 23天16小时</span></div><div class="actor"><span class="actor-icon">C</span><span class="actor-name">CoreHR实施账号<br>2(zt20292)</span><span class="time">◷ 2026/09/20 17:50~2026/10/14 10:29</span></div><div class="result">转交: 黄东升(WX21197)</div></article>
+            <article class="record pending"><span class="dot"></span><div class="record-head">直接上级（转交）</div><div class="actor"><span class="actor-icon">黄</span><span class="actor-name">黄东升<br>(WX21197)</span><span class="time">◷ 2026/10/14 10:29</span></div></article>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

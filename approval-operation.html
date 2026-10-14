@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>审批操作 - 新增加签</title>
+  <style>
+    :root { --blue:#1677ff; --border:#edf0f4; --text:#1f2937; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-width:0; overflow:hidden; color:var(--text); font:14px -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; background:#f5f7fb; }
+    .app { height:100dvh; min-height:0; position:relative; overflow:hidden; }
+    .shell { position:absolute; inset:0; background:#f5f7fb; }
+    .global-header { position:absolute; inset:0 0 auto 0; height:52px; display:flex; align-items:center; background:#fff; border-bottom:1px solid #edf0f5; }
+    .logo { width:128px; margin-left:28px; color:#0d4a99; font-size:21px; font-weight:800; letter-spacing:1px; }
+    .home { width:40px; color:#697586; text-align:center; font-size:17px; }.all-menu { height:28px; padding:5px 10px; border:1px solid #dfe4ec; border-radius:3px; color:#263445; font-size:12px; }.module { align-self:stretch; display:flex; align-items:center; margin-left:18px; padding:0 17px; color:#fff; background:#1677ff; font-size:13px; }.header-tools { margin-left:auto; display:flex; align-items:center; gap:14px; padding-right:28px; color:#7d8794; }.search { width:202px; padding:8px 13px; border-radius:18px; box-shadow:0 2px 9px rgba(0,0,0,.08); font-size:12px; color:#b1b8c2; }.round { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; box-shadow:0 2px 8px rgba(0,0,0,.08); }.user { padding:7px 12px; border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,.08); font-size:12px; }
+    .sidebar { position:absolute; left:0; top:52px; bottom:0; width:220px; padding-top:7px; background:#fff; border-right:1px solid #edf0f5; }
+    .nav { display:flex; align-items:center; height:48px; padding:0 28px; color:#253248; }.nav .chev { margin-left:auto; font-size:12px; }.nav.muted { padding-left:55px; color:#45556b; }
+    .workspace { position:absolute; top:52px; left:220px; right:0; bottom:0; }
+    .crumb { height:41px; margin:0 10px; padding:12px 24px; color:#4b5565; background:#f6f8fc; font-size:12px; }.crumb .active-crumb { margin-left:25px; color:#1677ff; border-bottom:2px solid #1677ff; padding:0 0 11px; }
+    .content { position:absolute; left:10px; right:10px; top:51px; bottom:0; background:#fff; border:1px solid #ebeff5; border-radius:8px 8px 0 0; overflow:hidden; }
+    .content-head { height:56px; display:flex; align-items:center; padding:0 24px; border-bottom:1px solid #e6ebf2; }.content h2 { margin:0; color:#17233d; font-size:17px; }.page-actions { display:flex; gap:10px; margin-left:auto; }.page-actions button { height:30px; font-size:12px; }.page-actions .publish { color:#fff; border-color:#1677ff; background:#1677ff; }
+    .canvas { position:absolute; inset:56px 0 0; background:#fff; }.zoom { position:absolute; top:58px; right:30px; display:flex; align-items:center; gap:12px; color:#253248; font-size:12px; }.zoom .zoom-icon { display:inline-flex; justify-content:center; align-items:center; width:34px; height:30px; border:1px solid #d8dee8; border-radius:6px; }
+    .flow-stack { position:absolute; top:78px; left:50%; width:220px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; }.process-card { width:220px; border:1px solid #e5e9f0; background:#fff; box-shadow:0 2px 9px rgba(29,53,87,.06); }.process-card .card-title { height:24px; padding:4px 15px; color:#fff; background:#ff8c33; font-weight:600; font-size:12px; }.process-card.start .card-title { background:#5a70a6; }.process-card .card-title .close { float:right; font-weight:400; }.process-card .card-body { height:53px; display:flex; align-items:center; justify-content:space-between; padding:0 15px; color:#18253a; }.process-card .arrow { font-size:20px; font-weight:300; }.connector { height:83px; width:2px; position:relative; background:#cbd2db; }.connector:after { content:""; position:absolute; left:-4px; bottom:9px; border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid #cbd2db; }.plus { position:absolute; bottom:26px; left:50%; display:flex; align-items:center; justify-content:center; width:31px; height:31px; transform:translateX(-50%); border-radius:50%; color:#fff; background:#1677ff; box-shadow:0 1px 4px rgba(22,119,255,.4); font-size:26px; font-weight:300; line-height:29px; }
+    .dim { position:absolute; inset:0; z-index:2; background:rgba(0,0,0,.44); }
+    .drawer { position:absolute; z-index:3; top:0; right:0; width:min(768px, calc(100vw - 360px)); height:100%; display:flex; flex-direction:column; background:#fff; box-shadow:-4px 0 16px rgba(0,0,0,.12); }
+    .drawer-header { height:56px; flex:0 0 56px; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid #eef0f4; }
+    .drawer-title { color:#17233d; font-weight:700; font-size:17px; }.edit { font-size:14px; }
+    .node { font-size:12px; color:#17233d; font-weight:600; }
+    .tabs { height:49px; display:flex; gap:30px; padding:0 24px; border-bottom:1px solid #eef0f4; }
+    .tab { display:flex; align-items:center; padding:0 0; color:#18253a; }.tab.active { color:var(--blue); border-bottom:2px solid var(--blue); }
+    .drawer-body { flex:1; overflow:auto; padding:6px 20px 85px; }
+    .info { display:flex; gap:10px; margin-bottom:18px; padding:12px; border:1px solid #91caff; border-radius:8px; background:#edf6ff; color:#2f4c6f; line-height:1.5; }
+    .info-icon { flex:0 0 24px; width:24px; height:24px; border:2px solid var(--blue); border-radius:50%; color:var(--blue); text-align:center; font-weight:700; line-height:20px; }
+    .restore { text-align:right; margin:0 0 8px; color:var(--blue); font-size:12px; }
+    .role { display:grid; grid-template-columns:120px 1fr; border:1px solid var(--border); border-bottom:0; }
+    .role:last-of-type { border-bottom:1px solid var(--border); }
+    .role-name { display:flex; align-items:center; justify-content:center; min-height:135px; border-right:1px solid var(--border); color:#233044; font-size:13px; }
+    .role-name.creator,
+    .role-name.handler { min-height:246px; }
+    .role-content { min-width:0; }
+    table { width:100%; border-collapse:separate; border-spacing:0; table-layout:fixed; }
+    .role col:nth-child(1) { width:18% !important; }.role col:nth-child(2) { width:28% !important; }.role col:nth-child(3) { width:24% !important; }.role col:nth-child(4) { width:28% !important; }.role col:nth-child(5) { width:2% !important; }
+    th { height:35px; padding:0 10px; color:#131d2c; text-align:left; font-size:13px; font-weight:700; background:#fff; border-right:1px solid var(--border); border-bottom:1px solid var(--border); white-space:nowrap; }
+    th:last-child, td:last-child { border-right:0; } td { height:44px; padding:7px 10px; border-right:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .role-content table tr:last-child td { border-bottom:0; }
+    .control { height:30px; padding:5px 10px; display:flex; align-items:center; justify-content:space-between; border:1px solid #d9dfe7; border-radius:6px; background:#fff; color:#27364a; white-space:nowrap; }
+    .control.placeholder { color:#b6bfca; }.control.disabled { color:#b6bfca; background:#fafafa; }
+    .editable { width:100%; height:30px; padding:0 9px; border:1px solid #91caff; border-radius:6px; outline:none; color:#27364a; background:#fff; font:inherit; }
+    .editable:focus { border-color:#1677ff; box-shadow:0 0 0 2px rgba(22,119,255,.12); }
+    select.editable { padding-right:3px; cursor:pointer; }
+    .add { display:inline-block; margin:13px 10px 13px; color:var(--blue); cursor:pointer; font-size:13px; }
+    .add:hover { color:#4096ff; }.added { background:#f8fbff; }.badge { display:inline-block; margin-left:8px; padding:1px 6px; border-radius:9px; color:#1677ff; background:#e6f4ff; font-size:11px; }
+    .footer { position:absolute; left:0; right:0; bottom:0; z-index:4; height:72px; display:flex; align-items:center; gap:10px; padding-left:16px; border-top:1px solid #eef0f4; background:#fff; }
+    button { height:31px; padding:0 13px; border:1px solid #d9dfe7; border-radius:5px; color:#27364a; background:#fff; cursor:pointer; } button.primary { color:#fff; border-color:var(--blue); background:var(--blue); } button:hover { border-color:#4096ff; }
+    .toast { position:fixed; z-index:6; right:26px; bottom:88px; display:none; padding:10px 14px; border-radius:5px; color:#1f2937; background:#fff; box-shadow:0 5px 18px rgba(0,0,0,.18); }
+    .toast.show { display:block; }
+    .drawer-closed .drawer, .drawer-closed .dim { display:none; }
+    .process-card[data-drawer-trigger] { cursor:pointer; }
+    .process-card[data-drawer-trigger]:hover { border-color:#91caff; box-shadow:0 3px 12px rgba(22,119,255,.18); }
+    @media (max-width: 1280px) { .header-tools { gap:8px; padding-right:16px; }.search { width:150px; }.user { display:none; }.page-actions button { padding:0 8px; }.content-head { padding:0 16px; }.flow-stack { transform:translateX(-35%); } }
+    @media (max-width: 960px) { .sidebar { width:160px; }.workspace { left:160px; }.logo { width:112px; margin-left:18px; }.all-menu { display:none; }.module { margin-left:4px; }.home { width:32px; }.search { display:none; }.drawer { width:calc(100vw - 160px); }.role { grid-template-columns:88px 1fr; }.role-name { font-size:12px; }.drawer-body { padding-left:12px; padding-right:12px; }.tabs { gap:18px; padding:0 16px; }.drawer-header { padding:0 16px; } th, td { padding-left:6px; padding-right:6px; font-size:12px; }.control { padding-left:6px; padding-right:6px; }.editable { padding-left:6px; padding-right:4px; }.page-actions button:nth-child(2), .page-actions button:nth-child(3) { display:none; } }
+  </style>
+</head>
+<body>
+  <div class="app drawer-closed">
+    <div class="shell">
+      <header class="global-header"><div class="logo">HR<span style="color:#ffb000">O</span>NE</div><div class="home">⌂</div><div class="all-menu">👥 全部菜单　⌄</div><div class="module">流程管理 ×</div><div class="header-tools"><div class="search">快捷菜单搜索　　⌕</div><div class="round">◎</div><div class="round">✉</div><div class="round">♟</div><div class="user">◉ CoreHR实施账号2</div></div></header>
+      <aside class="sidebar"><div class="nav">♧　流程查询 <span class="chev">⌄</span></div><div class="nav">▥　流程配置</div></aside>
+      <main class="workspace"><div class="crumb">首页　　流程配置　　<span class="active-crumb">转正流程</span></div><section class="content"><div class="content-head"><h2>流程设计 · 人事 · 转正流程</h2><div class="page-actions"><button>⊗ 取消</button><button>▣ 复制流程图</button><button>♧ 导入流程图</button><button>▣ 暂存</button><button class="publish">➤ 发布</button></div></div><div class="canvas"><div class="zoom"><span class="zoom-icon">⌕</span><span>100%</span><span class="zoom-icon">⊕</span></div><div class="flow-stack"><div class="process-card start"><div class="card-title">发起人1</div><div class="card-body">配置完成，点击查看 <span class="arrow">›</span></div></div><div class="connector"><span class="plus">+</span></div><div class="process-card" id="approvalNode" data-drawer-trigger role="button" tabindex="0"><div class="card-title">HRBP审核 <span class="close">×</span></div><div class="card-body">配置完成，点击查看 <span class="arrow">›</span></div></div><div class="connector"><span class="plus">+</span></div><div class="process-card"><div class="card-title">员工确认 <span class="close">×</span></div><div class="card-body">配置完成，点击查看 <span class="arrow">›</span></div></div><div class="connector"><span class="plus">+</span></div><div class="process-card"><div class="card-title">直接上级审核 <span class="close">×</span></div><div class="card-body">配置完成，点击查看 <span class="arrow">›</span></div></div><div class="connector"><span class="plus">+</span></div></div></div></section></main>
+    </div>
+    <div class="dim"></div>
+    <section class="drawer" aria-label="审批操作配置">
+      <div class="drawer-header"><div class="drawer-title">直接上级　<span class="edit">✎</span></div><div class="node">节点ID: flow_587448793725</div></div>
+      <nav class="tabs" aria-label="节点设置"><div class="tab">审批设置</div><div class="tab">审批表单</div><div class="tab active">审批操作</div><div class="tab">高级</div></nav>
+      <div class="drawer-body">
+        <div class="info"><span class="info-icon">i</span><span>设置流程处于当前节点时，创建人、处理人、已处理人在审批详情页中可以操作的审批按钮，以及设置审批意见是否展示、是否必填。</span></div>
+        <div class="restore">恢复默认设置</div>
+        <section class="role"><div class="role-name creator">创建人</div><div class="role-content"><table><colgroup><col style="width:92px"><col style="width:143px"><col style="width:122px"><col style="width:143px"><col></colgroup><thead><tr><th>审批操作</th><th>自定义名称（多语言）</th><th>审批意见</th><th>默认的审批意见内容</th><th>操作</th></tr></thead><tbody><tr><td><div class="control">撤回　⌄</div></td><td><div class="control placeholder">请输入　◎</div></td><td><div class="control">显示,不必填　⌄</div></td><td><div class="control placeholder">请描述业务…　◎</div></td><td></td></tr><tr class="added"><td><select class="editable" id="voidAction" aria-label="作废审批操作"><option>作废</option></select></td><td><input class="editable" id="voidCustomName" aria-label="作废自定义名称" placeholder="请输入"></td><td><select class="editable" id="voidOpinionRule" aria-label="作废审批意见"><option selected>显示,必填</option><option>显示,不必填</option><option>不显示</option></select></td><td><input class="editable" id="voidDefaultOpinion" aria-label="作废默认审批意见内容" value="/"></td><td><span class="badge">新增</span></td></tr></tbody></table><span class="add">＋ 添加操作</span></div></section>
+        <section class="role"><div class="role-name handler">处理人</div><div class="role-content"><table><colgroup><col style="width:92px"><col style="width:143px"><col style="width:122px"><col style="width:143px"><col></colgroup><thead><tr><th>审批操作</th><th>自定义名称（多语言）</th><th>审批意见</th><th>默认的审批意见内容</th><th>操作</th></tr></thead><tbody><tr><td><div class="control">同意　⌄</div></td><td><div class="control placeholder">请输入　◎</div></td><td><div class="control">显示,不必填　⌄</div></td><td><div class="control placeholder">请描述业务…　◎</div></td><td></td></tr><tr class="added"><td><select class="editable" id="addAction" aria-label="加签审批操作"><option>加签</option></select></td><td><input class="editable" id="customName" aria-label="加签自定义名称" placeholder="请输入"></td><td><select class="editable" id="opinionRule" aria-label="加签审批意见"><option>显示,不必填</option><option>显示,必填</option><option>不显示</option></select></td><td><input class="editable" id="defaultOpinion" aria-label="加签默认审批意见内容" placeholder="请描述业务…"></td><td><span class="badge">新增</span></td></tr></tbody></table><span class="add" id="addOperation">＋ 添加操作</span></div></section>
+        <section class="role"><div class="role-name">已处理人</div><div class="role-content"><table><colgroup><col style="width:92px"><col style="width:143px"><col style="width:122px"><col style="width:143px"><col></colgroup><thead><tr><th>审批操作</th><th>自定义名称（多语言）</th><th>审批意见</th><th>默认的审批意见内容</th><th>操作</th></tr></thead><tbody><tr><td><div class="control">催办　⌄</div></td><td><div class="control placeholder">请输入　◎</div></td><td><div class="control disabled">显示,不必填　⌄</div></td><td><div class="control placeholder">请描述业务…　◎</div></td><td></td></tr></tbody></table><span class="add">＋ 添加操作</span></div></section>
+      </div>
+      <footer class="footer"><button class="primary" id="confirm">☑ 确认</button><button id="cancel">⊗ 取消</button></footer>
+    </section>
+  </div>
+  <div class="toast" role="status" id="toast"></div>
+  <script>
+    const toast = document.getElementById('toast');
+    const message = text => { toast.textContent = text; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2200); };
+    document.getElementById('confirm').addEventListener('click', () => {
+      const value = id => document.getElementById(id).value;
+      const savedConfig = { creatorVoid:{ action:value('voidAction'), customName:value('voidCustomName'), opinionRule:value('voidOpinionRule'), defaultOpinion:value('voidDefaultOpinion') }, handlerAddSign:{ action:value('addAction'), customName:value('customName'), opinionRule:value('opinionRule'), defaultOpinion:value('defaultOpinion') } };
+      window.hroneHandlerAddSign = savedConfig;
+      document.querySelector('.app').classList.add('drawer-closed');
+      message('已保存“处理人”的加签审批操作配置');
+      try { localStorage.setItem('hrone-handler-add-sign', JSON.stringify(savedConfig)); } catch (_) { /* file:// 页面不支持本地存储时仍完成保存反馈 */ }
+    });
+    document.getElementById('cancel').addEventListener('click', () => message('已取消本次修改'));
+    document.getElementById('addOperation').addEventListener('click', () => message('“加签”已在处理人区域新增'));
+    const openDrawer = () => {
+      document.querySelector('.app').classList.remove('drawer-closed');
+      document.querySelector('.drawer-title').childNodes[0].nodeValue = 'HRBP审核　';
+    };
+    document.getElementById('approvalNode').addEventListener('click', openDrawer);
+    document.getElementById('approvalNode').addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openDrawer(); } });
+  </script>
+</body>
+</html>

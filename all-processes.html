@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>全部流程 · HRONE</title>
+  <style>
+    :root { --blue:#1769ff; --ink:#102746; --muted:#8c98aa; --line:#e8ebf0; --back:#f4f6fa; }
+    * { box-sizing:border-box; }
+    html,body { width:100%; height:100%; margin:0; }
+    body { overflow:hidden; color:#13243d; background:var(--back); font:12px -apple-system,BlinkMacSystemFont,"Microsoft YaHei","Segoe UI",sans-serif; }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    .topbar { position:absolute; z-index:3; inset:0 0 auto; height:52px; display:flex; align-items:center; border-bottom:1px solid #e9edf4; background:#fff; }
+    .brand { display:flex; align-items:center; width:134px; padding-left:28px; color:#062956; font-size:23px; font-weight:800; letter-spacing:1px; line-height:1; white-space:nowrap; }
+    .logo-o { position:relative; width:20px; height:20px; margin:0 1px; border-radius:50%; background:conic-gradient(#ff9d0a 0 24%,#0565d4 24% 54%,#18b8bc 54% 73%,#fa9c08 73% 100%); }
+    .logo-o:after { content:""; position:absolute; inset:5px; border-radius:50%; background:#fff; }
+    .home { width:34px; color:#697b97; text-align:center; font-size:18px; }
+    .all-menu { height:24px; display:flex; align-items:center; gap:6px; margin-left:1px; padding:0 10px; border:1px solid #e2e6ed; border-radius:4px; color:#102746; background:#fff; font-size:13px; white-space:nowrap; }
+    .app-mark { color:#16b9c9; font-size:14px; line-height:1; text-shadow:5px 0 #ffad22,-4px 0 #3d81ff; }
+    .top-tab { align-self:stretch; display:flex; align-items:center; gap:5px; margin-left:16px; padding:0 13px; color:#fff; background:#1769f9; font-size:13px; white-space:nowrap; }
+    .top-tab span { font-size:16px; font-weight:300; }
+    .top-tools { display:flex; align-items:center; gap:10px; margin-left:auto; padding-right:17px; }
+    .round-tool { position:relative; width:37px; height:37px; display:grid; place-items:center; border:0; border-radius:50%; color:#8a929d; background:#fff; box-shadow:0 1px 10px rgba(20,43,76,.06); font-size:15px; }
+    .badge { position:absolute; top:-2px; right:-5px; min-width:30px; height:15px; padding:0 4px; border-radius:9px; color:#fff; background:#ff4d51; font-size:11px; line-height:15px; }
+    .account { height:29px; display:flex; align-items:center; gap:5px; padding:0 10px; border:1px solid #eceef2; border-radius:16px; color:#888; background:#fff; white-space:nowrap; font-size:12px; }
+    .account-icon { width:15px; height:15px; display:grid; place-items:center; border-radius:50%; color:#fff; background:#a7adb5; font-size:10px; }
+    .sidebar { position:absolute; top:52px; bottom:0; left:0; width:220px; background:#fff; border-right:1px solid #e7ebf0; }
+    .side-head { height:45px; display:flex; align-items:center; gap:7px; padding:0 25px; color:#0960e8; font-size:14px; font-weight:600; }
+    .side-head .chevron { margin-left:auto; font-size:16px; }
+    .side-entry { height:40px; display:flex; align-items:center; gap:7px; margin:7px 4px 2px; padding:0 48px; border-radius:8px; color:#102746; white-space:nowrap; font-size:14px; }
+    .side-entry.active { color:#1669fa; background:#eaf0ff; }
+    .side-entry.secondary { margin-top:2px; }
+    .side-config { display:flex; align-items:center; gap:7px; padding:0 27px; height:47px; color:#172a46; font-size:14px; }
+    .side-bottom { position:absolute; right:0; bottom:0; left:0; height:32px; border-top:1px solid #edf0f3; color:#4286f8; text-align:right; padding:7px 17px; }
+    .workspace { position:absolute; top:52px; right:0; bottom:0; left:220px; min-width:0; display:flex; flex-direction:column; }
+    .tabs { flex:0 0 41px; display:flex; align-items:stretch; margin:0 10px; border-radius:9px; background:#fafbfe; }
+    .tab { min-width:56px; display:grid; place-items:center; padding:0 16px; color:#293b55; font-size:12px; }
+    .tab.active { border-bottom:2px solid var(--blue); color:var(--blue); font-weight:600; }
+    .tabs .collapse { align-self:center; margin-left:auto; padding:0 8px; color:#2180ff; font-size:17px; }
+    .query-card { flex:0 0 auto; margin:10px 10px 0; border-radius:8px; background:#fff; overflow:hidden; }
+    .section-title { height:38px; display:flex; align-items:center; gap:5px; padding:0 13px; border-bottom:1px solid var(--line); color:#121d31; font-weight:700; }
+    .section-title svg { width:13px; height:13px; }
+    .filters { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px 12px; padding:10px 18px 0; }
+    .field label { display:block; margin-bottom:7px; color:#0b1424; white-space:nowrap; font-weight:600; }
+    .field input,.field select { width:100%; height:30px; padding:0 11px; border:1px solid #d5d8de; border-radius:6px; outline:0; color:#172b46; background:#fff; }
+    .field input::placeholder,.field select:invalid { color:#b9c0ca; }
+    .field select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='m1 1 4 4 4-4' fill='none' stroke='%23aeb8c5' stroke-width='1.3'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; }
+    .field input:focus,.field select:focus { border-color:#7caaff; }
+    .filter-actions { display:flex; justify-content:flex-end; gap:5px; padding:12px 17px; }
+    .filter-actions button { height:31px; display:flex; align-items:center; justify-content:center; gap:5px; padding:0 10px; border-radius:6px; font-weight:600; }
+    .reset { border:1px solid #d8dce3; color:#1a2538; background:#fff; }
+    .search-button { border:1px solid var(--blue); color:#fff; background:var(--blue); box-shadow:0 2px 4px rgba(22,105,255,.18); }
+    .table-card { flex:1; min-height:0; display:flex; flex-direction:column; margin:10px 10px 0; padding:0 10px 11px; border-radius:8px 8px 0 0; background:#fff; }
+    .table-toolbar { flex:0 0 50px; display:flex; align-items:center; justify-content:flex-end; }
+    .settings { width:22px; height:22px; border:0; color:#383e49; background:transparent; font-size:15px; }
+    .table-scroll { min-height:0; flex:1; overflow:auto; scrollbar-color:#e4e7ec transparent; scrollbar-width:thin; }
+    .process-table { width:1820px; min-width:1820px; border-collapse:collapse; table-layout:fixed; color:#09101b; }
+    .process-table col:nth-child(1) { width:80px; }.process-table col:nth-child(2) { width:150px; }.process-table col:nth-child(3) { width:180px; }.process-table col:nth-child(4) { width:110px; }.process-table col:nth-child(5) { width:150px; }.process-table col:nth-child(6) { width:100px; }.process-table col:nth-child(7) { width:140px; }.process-table col:nth-child(8) { width:140px; }.process-table col:nth-child(9) { width:90px; }.process-table col:nth-child(10) { width:90px; }.process-table col:nth-child(11) { width:170px; }.process-table col:nth-child(12) { width:310px; }.process-table col:nth-child(13) { width:110px; }
+    th { position:sticky; top:0; z-index:1; height:35px; padding:0 18px 0 8px; border-right:1px solid #edf0f4; background:#fafafa; text-align:left; font-weight:700; white-space:normal; overflow-wrap:anywhere; }
+    th:last-child { border-right:0; }
+    .column-resize { position:absolute; top:0; right:0; bottom:0; width:14px; display:flex; align-items:center; justify-content:center; color:#aab7c9; cursor:col-resize; touch-action:none; user-select:none; font-size:14px; font-weight:400; }
+    .column-resize:hover,.column-resize:focus-visible,th.resizing .column-resize { color:#1769ff; background:#eaf2ff; outline:none; }
+    body.column-resizing { cursor:col-resize; user-select:none; }
+    td { height:44px; padding:5px 8px; border-bottom:1px solid #eceef1; vertical-align:middle; white-space:normal; overflow-wrap:anywhere; }
+    tbody tr:first-child td { height:55px; }
+    tbody tr:nth-child(even) { background:#fff; }
+    tbody tr:hover { background:#f8fbff; }
+    .blue-link { color:#0967ff; white-space:normal; overflow-wrap:anywhere; }
+    .flow-name-link { padding:0; border:0; color:#0967ff; background:transparent; text-align:left; white-space:normal; overflow-wrap:anywhere; }
+    .flow-name-link:hover { text-decoration:underline; }
+    .copy { display:inline-block; margin-left:4px; padding:0; border:0; color:#126bff; background:transparent; font-size:12px; vertical-align:baseline; }
+    .person-cell { line-height:20px; overflow-wrap:anywhere; }
+    .anomaly-details { line-height:18px; white-space:normal; overflow-wrap:anywhere; }
+    .workflow-state,.approval-state { display:inline-flex; align-items:center; justify-content:center; min-height:21px; padding:0 8px; border:1px solid; border-radius:12px; font-weight:500; line-height:18px; white-space:nowrap; }
+    .workflow-state { color:#12a150; border-color:#ccebd9; background:#ebf8f1; }
+    .workflow-state.abnormal { color:#e0393e; border-color:#ffd4d1; background:#fff1f0; }
+    .approval-state[data-status="审批中"] { color:#1769ff; border-color:#cfe1ff; background:#edf4ff; }
+    .approval-state[data-status="通过"] { color:#12a150; border-color:#ccebd9; background:#ebf8f1; }
+    .approval-state[data-status="不通过"] { color:#e97800; border-color:#ffe0b4; background:#fff5e8; }
+    .approval-state[data-status="已作废"] { color:#6b7280; border-color:#e0e5eb; background:#f5f7f9; }
+    .approval-state[data-status="已驳回"] { color:#e0393e; border-color:#ffd4d1; background:#fff1f0; }
+    .approval-state[data-status="已撤回"] { color:#7b4edb; border-color:#e5d6ff; background:#f5efff; }
+    td:last-child { white-space:nowrap; overflow-wrap:normal; }
+    .actions { display:flex; align-items:center; flex-wrap:nowrap; gap:5px; width:max-content; white-space:nowrap; }
+    .action { flex:0 0 26px; width:26px; height:26px; display:grid; place-items:center; border:0; border-radius:6px; color:#1769ff; background:#f5f7fd; font-size:15px; line-height:1; white-space:nowrap; overflow-wrap:normal; }
+    .action.more { color:#34445b; font-weight:700; }
+    .action svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.4; }
+    .empty { height:80px; text-align:center; color:#8c98aa; }
+    .toast { position:fixed; z-index:9; right:23px; bottom:18px; display:none; padding:9px 13px; border-radius:5px; color:#fff; background:#33435a; box-shadow:0 3px 10px #0002; }
+    .toast.show { display:block; }
+    .intervention-overlay { position:fixed; z-index:10; inset:0; display:grid; place-items:center; padding:12px; background:rgba(0,0,0,.38); }
+    .intervention-overlay[hidden],.intervention-info[hidden],.intervention-field[hidden] { display:none; }
+    .intervention-dialog { width:min(600px,100%); max-height:calc(100vh - 24px); display:flex; flex-direction:column; overflow:hidden; border-radius:8px; background:#fff; box-shadow:0 12px 30px #0003; font-size:12px; }
+    .intervention-head { flex:0 0 56px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; color:#1769ff; background:#eef2ff; font-size:14px; font-weight:700; }
+    .intervention-close { width:20px; height:20px; padding:0; border:0; color:#8992a0; background:transparent; font-size:22px; line-height:20px; }
+    .intervention-body { overflow:auto; padding:10px 20px 32px; }
+    .intervention-info { display:flex; gap:8px; min-height:52px; padding:8px 7px; border:1px solid #8cc9ff; border-radius:5px; color:#7b858f; background:#e6f6ff; line-height:19px; }
+    .intervention-info-icon { flex:0 0 23px; width:23px; height:23px; display:grid; place-items:center; border:2px solid #1680ff; border-radius:50%; color:#1680ff; font-size:15px; font-weight:700; line-height:1; }
+    .intervention-info-copy { flex:1; }
+    .intervention-info-actions { display:flex; align-items:flex-start; gap:7px; white-space:nowrap; }
+    .intervention-info-actions button { padding:0; border:0; color:#5a6675; background:transparent; }
+    .intervention-field { margin-top:18px; }
+    .intervention-field label { display:block; margin-bottom:7px; color:#252b33; }
+    .intervention-field label .required { margin-right:4px; color:#ff4343; }
+    .intervention-field label .required[hidden] { display:none; }
+    .intervention-field input,.intervention-field textarea { width:100%; border:1px solid #d9d9d9; border-radius:5px; color:#354154; background:#fff; font:inherit; }
+    .intervention-field input { height:30px; padding:0 11px; }
+    .intervention-field input::placeholder { color:#bbc1c9; }
+    .intervention-field input:focus { outline:none; border-color:#d9d9d9; }
+    .intervention-field input:disabled { color:#aeb4bc; background:#f3f3f3; }
+    .node-picker,.executor-picker { position:relative; }
+    .node-trigger { width:100%; height:30px; display:flex; align-items:center; justify-content:space-between; padding:0 11px; border:1px solid #d9d9d9; border-radius:5px; color:#354154; background:#fff; text-align:left; font:inherit; }
+    .node-trigger.placeholder { color:#bbc1c9; }
+    .node-trigger:focus { outline:none; border-color:#d9d9d9; }
+    .node-popup { position:absolute; z-index:5; top:0; left:0; right:0; padding:4px; border:1px solid #d9d9d9; border-radius:5px; background:#fff; box-shadow:0 6px 15px #0002; }
+    .node-popup[hidden],.executor-results[hidden] { display:none; }
+    .node-search { position:relative; }
+    .node-search input,.intervention-field .node-search input:focus { border-color:#5b9eff; outline:none; }
+    .node-search span { position:absolute; top:5px; right:9px; color:#a8b5c3; font-size:16px; }
+    .node-options { max-height:218px; overflow:auto; padding-top:3px; }
+    .node-option,.executor-option { width:100%; min-height:30px; display:block; padding:6px 12px; border:0; border-radius:4px; color:#3b4654; background:#fff; text-align:left; font:inherit; cursor:pointer; }
+    .node-option:hover,.node-option:focus-visible,.executor-option:hover,.executor-option:focus-visible { outline:none; background:#f3f3f3; }
+    .node-empty,.executor-empty { padding:8px 12px; color:#9aa3ae; }
+    .executor-results { position:absolute; z-index:4; top:calc(100% + 4px); left:0; right:0; max-height:185px; overflow:auto; padding:4px; border:1px solid #d9d9d9; border-radius:5px; background:#fff; box-shadow:0 6px 15px #0002; }
+    .executor-option small { margin-left:6px; color:#8a95a3; }
+    .intervention-field .invalid,.intervention-field .invalid:focus { border-color:#ff4d4f; }
+    .field-error { display:none; margin-top:3px; color:#ff4d4f; font-size:12px; }
+    .field-error.show { display:block; }
+    .intervention-field textarea { height:66px; padding:8px 10px; resize:vertical; }
+    .intervention-count { color:#999; text-align:right; line-height:20px; }
+    .intervention-foot { flex:0 0 51px; display:flex; align-items:center; justify-content:flex-end; gap:8px; padding:0 20px; border-top:1px solid #eee; }
+    .intervention-foot button { height:30px; padding:0 12px; border:1px solid #d9d9d9; border-radius:5px; color:#4a5059; background:#fff; }
+    .intervention-foot button.primary { border-color:#1769ff; color:#fff; background:#1769ff; }
+    @media (max-width:1440px) { .filters { gap:12px 10px; }.top-tools { gap:4px; } }
+    @media (max-width:1280px) { .sidebar { width:190px; }.workspace { left:190px; }.side-entry { padding-left:38px; }.brand { width:124px; padding-left:18px; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">HR<span class="logo-o" aria-label="O"></span>NE</div>
+    <div class="home">⌂</div>
+    <button class="all-menu" type="button"><span class="app-mark">✿</span>全部菜单 <span>⌄</span></button>
+    <div class="top-tab">流程管理 <span>×</span></div>
+    <div class="top-tools"><button class="round-tool" type="button" aria-label="搜索">⌕</button><button class="round-tool" type="button" aria-label="语言">◎</button><button class="round-tool" type="button" aria-label="待办">♢<span class="badge">108</span></button><button class="round-tool" type="button" aria-label="通知">♧<span class="badge">25</span></button><div class="account"><span class="account-icon">●</span>黄东升</div></div>
+  </header>
+  <aside class="sidebar">
+    <div class="side-head"><span>♧</span>流程查询 <span class="chevron">⌃</span></div>
+    <div class="side-entry active">♙　全部流程</div>
+    <div class="side-config">▦　流程配置</div>
+    <div class="side-bottom">◂|</div>
+  </aside>
+  <main class="workspace">
+    <nav class="tabs" aria-label="页面标签"><span class="tab">首页</span><span class="tab active">全部流程</span><span class="collapse">⌄</span></nav>
+    <section class="query-card" aria-labelledby="query-title">
+      <div class="section-title" id="query-title"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12l-4.6 5.4v3.8l-2.8 1.4V8.4Z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>查询条件</div>
+      <form id="searchForm" novalidate>
+        <div class="filters">
+          <div class="field"><label for="flowName">流程名称</label><input id="flowName" type="text" placeholder="请输入"></div>
+          <div class="field"><label for="approvalNo">审批编号</label><input id="approvalNo" type="text" placeholder="请输入"></div>
+          <div class="field"><label for="flowType">流程类型</label><select id="flowType" required><option value="" selected>请选择</option><option>考勤</option><option>人事</option><option>招聘需求流程</option><option>offer流程</option></select></div>
+          <div class="field"><label for="status">审批状态</label><select id="status" required><option value="" selected>请选择</option><option>审批中</option><option>已作废</option><option>已撤回</option><option>通过</option></select></div>
+          <div class="field"><label for="anomalyType">异常类型</label><select id="anomalyType" required><option value="" selected>请选择</option><option>参与人为空</option><option>系统异常</option><option>分支异常</option><option>节点超时</option><option>流程卡住</option><option>数据不一致</option><option>流程实例</option></select></div>
+          <div class="field"><label for="workflowState">流程状态</label><select id="workflowState" required><option value="" selected>请选择</option><option>正常</option><option>异常</option></select></div>
+        </div>
+        <div class="filter-actions"><button class="reset" id="reset" type="button">⟲ 重置</button><button class="search-button" type="submit">⌕ 查询</button></div>
+      </form>
+    </section>
+    <section class="table-card" aria-label="全部流程列表">
+      <div class="table-toolbar"><button class="settings" type="button" aria-label="列表设置" title="列表设置">⚙</button></div>
+      <div class="table-scroll"><table class="process-table"><colgroup><col><col><col><col><col><col><col><col><col><col><col><col><col></colgroup><thead><tr><th>序号</th><th>流程名称</th><th>审批编号</th><th>异常类型</th><th>异常详情</th><th>流程类型</th><th>流程发起人</th><th>当前处理人</th><th>流程状态</th><th>审批状态</th><th>流程创建时间</th><th>流程实例ID</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="intervention-overlay" id="interventionOverlay" hidden>
+    <section class="intervention-dialog" role="dialog" aria-modal="true" aria-labelledby="interventionTitle">
+      <div class="intervention-head"><span id="interventionTitle">节点干预</span><button class="intervention-close" type="button" data-close-intervention aria-label="关闭">×</button></div>
+      <div class="intervention-body">
+        <div class="intervention-info" id="interventionInfo">
+          <span class="intervention-info-icon" aria-hidden="true">i</span>
+          <div class="intervention-info-copy">从节点该项为空时，表示流程没有找到审批节点<br><span id="interventionInfoExtra">流转至节点可选流程内所有审批节点，鼠标移入选项会出现节点名称和描述</span></div>
+          <div class="intervention-info-actions"><button id="interventionInfoToggle" type="button">收起⌃</button><button id="interventionInfoClose" type="button" aria-label="关闭说明">×</button></div>
+        </div>
+        <div class="intervention-field"><label for="interventionFrom">从节点</label><input id="interventionFrom" value="HRBP经理" disabled></div>
+        <div class="intervention-field" id="interventionToField"><label for="interventionNodeTrigger"><span class="required">*</span>流转至节点</label><div class="node-picker" id="interventionNodePicker"><input id="interventionTo" type="hidden"><button class="node-trigger placeholder" id="interventionNodeTrigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span id="interventionNodeLabel">请选择</span><span aria-hidden="true">⌄</span></button><div class="node-popup" id="interventionNodePopup" hidden><div class="node-search"><input id="interventionNodeSearch" type="text" placeholder="请选择" autocomplete="off" aria-label="搜索流转至节点"><span aria-hidden="true">⌕</span></div><div class="node-options" id="interventionNodeOptions" role="listbox" aria-label="流转至节点"></div></div></div><div class="field-error" id="interventionToError">必填项不能为空</div></div>
+        <div class="intervention-field" id="interventionExecutorField"><label for="interventionExecutor"><span class="required">*</span>执行人</label><div class="executor-picker"><input id="interventionExecutor" type="text" placeholder="请通过工号/姓名搜索" autocomplete="off" aria-controls="interventionExecutorResults" aria-expanded="false"><div class="executor-results" id="interventionExecutorResults" role="listbox" aria-label="执行人搜索结果" hidden></div></div><div class="field-error" id="interventionExecutorError">必填项不能为空</div></div>
+        <div class="intervention-field"><label for="interventionComment"><span class="required" id="interventionCommentRequired" hidden>*</span>审批意见</label><textarea id="interventionComment" maxlength="5000"></textarea><div class="field-error" id="interventionCommentError">必填项不能为空</div><div class="intervention-count" id="interventionCount">0 / 5000</div></div>
+      </div>
+      <div class="intervention-foot"><button type="button" data-close-intervention>取消</button><button class="primary" id="interventionConfirm" type="button">确定</button></div>
+    </section>
+  </div>
+  <script>
+    const data = [
+      ['雷佳俊的出差申请','P202610131640210003','考勤','CoreHR实施账号2(zt20292)','zt22650','审批中','2026-10-13 16:40:21','b9aed5dc-c6e1-11f1-b122-fefcfef54502'],
+      ['测试02的转正申请','P202610130859190002','人事','测试02(WB00066)','谭小龙(WX21199)','审批中','2026-10-13 08:59:19','524eb4eb-c6a1-11f1-b122-fefcfef54502'],
+      ['测试的转正申请','P202610130859180001','人事','测试(WX21479)','zt27199','审批中','2026-10-13 08:59:19','51e2ac60-c6a1-11f1-b122-fefcfef54502'],
+      ['1的调动申请','P202610121932390003','人事','黄东升(WX21197)','许大庆(WX21243)','审批中','2026-10-12 19:32:39','a12f7e25-c630-11f1-bea7-fefcfef54502'],
+      ['tt的离职申请','P202610121930090002','人事','黄东升(WX21197)','--','已作废','2026-10-12 19:30:09','485b0327-c630-11f1-bea7-fefcfef54502'],
+      ['12的调动申请','P202610121804090001','人事','黄东升(WX21197)','黄东升(WX21197)','审批中','2026-10-12 18:04:10','44c724d0-c624-11f1-bea7-fefcfef54502'],
+      ['12的调动申请','P202610121804090001','人事','黄东升(WX21197)','黄东升(WX21197)','审批中','2026-10-12 18:04:10','44c724d0-c624-11f1-bea7-fefcfef54502'],
+      ['贾子昱的转正申请','P202610101044110001','人事','谭雨薇(WX21567)','谭雨薇(WX21567)','已撤回','2026-10-10 10:44:11','798014c2-c454-11f1-ad1d-fefcfef54502'],
+      ['High_HRBP的招聘需求','P202610091745400040','招聘需求流程','CoreHR实施账号2(zt20292)','黄东升(WX21197)','审批中','2026-10-09 17:45:45','3339c209-c3c6-11f1-ad1d-fefcfef54502'],
+      ['100901的员工offer审批流程','P202610091609130039','offer流程','黄东升(WX21197)','zt06293','审批中','2026-10-09 16:09:13','b6eed4ab-c3b8-11f1-ad1d-fefcfef54502'],
+      ['人力1的招聘需求','P202610091558080038','招聘需求流程','黄东升(WX21197)','--','通过','2026-10-09 15:58:08','2a7ccee6-c3b7-11f1-ad1d-fefcfef54502']
+    ];
+    const anomalies = {
+      P202610121932390003: { node:'HRBP', type:'参与人为空', message:'【空审批人】审批人为空，节点名称：HRBP，节点 ID：flow_342935638143', time:'2026/10/12 19:48:34' },
+      P202610091745400040: { node:'部门负责人直接上级', type:'参与人为空', message:'【空审批人】审批人为空，节点名称：部门负责人直接上级，节点 ID：flow_350226891619', time:'2026/10/12 15:45:50' }
+    };
+    const rows = document.getElementById('rows');
+    const table = document.querySelector('.process-table');
+    const columns = [...table.querySelectorAll('colgroup col')];
+    const columnWidthsKey = 'hrone-all-processes-column-widths-v2';
+    const saveColumnWidths = () => {
+      try { localStorage.setItem(columnWidthsKey,JSON.stringify(columns.map(column=>Math.round(column.getBoundingClientRect().width)))); } catch {}
+    };
+    try {
+      const currentWidths=JSON.parse(localStorage.getItem(columnWidthsKey));
+      const oldWidths=JSON.parse(localStorage.getItem('hrone-all-processes-column-widths-v1'));
+      const migratedWidths=Array.isArray(oldWidths)&&oldWidths.length===15
+        ? [oldWidths[0],oldWidths[1],oldWidths[2],oldWidths[4],150,...oldWidths.slice(7)]
+        : null;
+      const savedWidths=Array.isArray(currentWidths)&&currentWidths.length===columns.length?currentWidths:migratedWidths;
+      if(Array.isArray(savedWidths)&&savedWidths.length===columns.length&&savedWidths.every(width=>Number.isFinite(width)&&width>=40)) {
+        savedWidths[columns.length-1]=Math.max(100,savedWidths[columns.length-1]);
+        savedWidths.forEach((width,index)=>{ columns[index].style.width=`${width}px`; });
+        table.style.width=`${savedWidths.reduce((sum,width)=>sum+width,0)}px`;
+        table.style.minWidth=table.style.width;
+      }
+    } catch {}
+    table.querySelectorAll('thead th').forEach((header,index)=>{
+      const handle=document.createElement('span');
+      handle.className='column-resize';
+      handle.textContent='|';
+      handle.title='拖动调整列宽';
+      handle.setAttribute('role','separator');
+      handle.setAttribute('aria-orientation','vertical');
+      handle.setAttribute('aria-label',`${header.textContent}列宽`);
+      const minWidth=index===columns.length-1?100:40;
+      handle.setAttribute('aria-valuemin',String(minWidth));
+      handle.tabIndex=0;
+      header.appendChild(handle);
+      const setWidth=(width,tableWidth)=>{
+        const next=Math.max(minWidth,Math.round(width));
+        columns[index].style.width=`${next}px`;
+        table.style.width=`${Math.round(tableWidth)}px`;
+        table.style.minWidth=table.style.width;
+        handle.setAttribute('aria-valuenow',String(next));
+      };
+      handle.setAttribute('aria-valuenow',String(Math.round(columns[index].getBoundingClientRect().width)));
+      let drag=null;
+      handle.addEventListener('pointerdown',event=>{
+        if(event.button!==0)return;
+        event.preventDefault();
+        drag={x:event.clientX,width:columns[index].getBoundingClientRect().width,tableWidth:table.getBoundingClientRect().width};
+        handle.setPointerCapture(event.pointerId);
+        header.classList.add('resizing');
+        document.body.classList.add('column-resizing');
+      });
+      handle.addEventListener('pointermove',event=>{
+        if(!drag)return;
+        const next=Math.max(minWidth,drag.width+event.clientX-drag.x);
+        setWidth(next,drag.tableWidth+next-drag.width);
+      });
+      const finish=()=>{ if(drag)saveColumnWidths(); drag=null; header.classList.remove('resizing'); document.body.classList.remove('column-resizing'); };
+      handle.addEventListener('pointerup',finish);
+      handle.addEventListener('pointercancel',finish);
+      handle.addEventListener('lostpointercapture',finish);
+      handle.addEventListener('keydown',event=>{
+        if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
+        event.preventDefault();
+        const current=columns[index].getBoundingClientRect().width;
+        const next=Math.max(minWidth,current+(event.key==='ArrowRight'?10:-10));
+        setWidth(next,table.getBoundingClientRect().width+next-current);
+        saveColumnWidths();
+      });
+    });
+    const bell = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.4 11.9h9.2c-1.1-1.1-1.5-2-1.5-4.9a3.1 3.1 0 0 0-6.2 0c0 2.9-.4 3.8-1.5 4.9Z"/><path d="M6.2 13.1c.3 1.1 2.5 1.1 2.8 0"/></svg>';
+    const flow = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="4" cy="8" r="2"/><circle cx="12" cy="8" r="2"/><path d="M6.2 8h3.6M8.4 5.8l2.2 2.2-2.2 2.2"/></svg>';
+    const iconAction = (name,icon,extra='') => `<button type="button" class="action ${extra}" aria-label="${name}" title="${name}">${icon}</button>`;
+    const copyButton = value => `<button type="button" class="copy" data-copy="${value}" aria-label="复制">▣</button>`;
+    const render = list => {
+      rows.replaceChildren();
+      if (!list.length) { const tr=document.createElement('tr'); tr.innerHTML='<td class="empty" colspan="13">暂无数据</td>'; rows.appendChild(tr); return; }
+      list.forEach((item,index)=>{
+        const [name,no,type,starter,handler,status,created,id] = item;
+        const anomaly = anomalies[no];
+        const workflowState = anomaly ? '异常' : '正常';
+        const tr=document.createElement('tr');
+        const anomalyDetails=anomaly?`<div>异常信息：${anomaly.message}</div><div>异常发生时间：${anomaly.time}</div>`:'';
+        tr.innerHTML = `<td>${index+1}</td><td><button class="flow-name-link" type="button" data-open-flow-detail>${name}</button></td><td><span class="blue-link">${no}</span>${copyButton(no)}</td><td>${anomaly?.type || ''}</td><td class="anomaly-details">${anomalyDetails}</td><td>${type}</td><td class="person-cell">${starter}</td><td class="person-cell">${handler}</td><td><span class="workflow-state ${anomaly ? 'abnormal' : ''}">${workflowState}</span></td><td><span class="approval-state" data-status="${status}">${status}</span></td><td>${created}</td><td><span class="blue-link">${id}</span>${copyButton(id)}</td><td><div class="actions">${status==='审批中'?iconAction('节点干预',flow,'node-intervene')+iconAction('催办',bell):''}${iconAction('更多','···','more')}</div></td>`;
+        rows.appendChild(tr);
+      });
+    };
+    const showToast = message => { const toast=document.getElementById('toast'); toast.textContent=message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>toast.classList.remove('show'),1800); };
+    const interventionOverlay=document.getElementById('interventionOverlay');
+    const interventionTo=document.getElementById('interventionTo');
+    const interventionNodeTrigger=document.getElementById('interventionNodeTrigger');
+    const interventionNodePopup=document.getElementById('interventionNodePopup');
+    const interventionNodeSearch=document.getElementById('interventionNodeSearch');
+    const interventionNodeOptions=document.getElementById('interventionNodeOptions');
+    const interventionExecutor=document.getElementById('interventionExecutor');
+    const interventionExecutorField=document.getElementById('interventionExecutorField');
+    const interventionExecutorResults=document.getElementById('interventionExecutorResults');
+    const interventionComment=document.getElementById('interventionComment');
+    const interventionCommentRequired=document.getElementById('interventionCommentRequired');
+    const interventionCommentError=document.getElementById('interventionCommentError');
+    const interventionNodes=['区域HRBP负责人','HRBP经理','HRBP负责人','调整部门负责人','部门负责人直接上级','部门负责人间接上级','发起人','结束'];
+    const employeeDirectory=Array.isArray(window.HRONE_EMPLOYEES)?window.HRONE_EMPLOYEES:[
+      {name:'雷佳俊',id:'zt20292'},{name:'移动端离职4',id:'zt9900130'},{name:'许大庆',id:'zt25050'},
+      {name:'黄东升',id:'WX21197'},{name:'谭小龙',id:'WX21199'},{name:'谭雨薇',id:'WX21567'}
+    ];
+    let interventionTrigger=null;
+    let selectedExecutor=null;
+    const setNodePopupOpen=open=>{
+      interventionNodePopup.hidden=!open;
+      interventionNodeTrigger.setAttribute('aria-expanded',String(open));
+      if(open){ interventionNodeSearch.value=''; renderNodeOptions(); interventionNodeSearch.focus(); }
+    };
+    const renderNodeOptions=()=>{
+      const query=interventionNodeSearch.value.trim().toLocaleLowerCase();
+      interventionNodeOptions.replaceChildren();
+      const matches=interventionNodes.filter(node=>node.toLocaleLowerCase().includes(query));
+      if(!matches.length){ const empty=document.createElement('div'); empty.className='node-empty'; empty.textContent='无匹配节点'; interventionNodeOptions.appendChild(empty); }
+      matches.forEach(node=>{
+        const option=document.createElement('button'); option.type='button'; option.className='node-option'; option.setAttribute('role','option'); option.textContent=node;
+        option.addEventListener('click',()=>{
+          interventionTo.value=node;
+          document.getElementById('interventionNodeLabel').textContent=node;
+          interventionNodeTrigger.classList.remove('placeholder','invalid');
+          document.getElementById('interventionToError').classList.remove('show');
+          setNodePopupOpen(false);
+          updateInterventionFields();
+          interventionNodeTrigger.focus();
+        });
+        interventionNodeOptions.appendChild(option);
+      });
+    };
+    const setExecutorResultsOpen=open=>{ interventionExecutorResults.hidden=!open; interventionExecutor.setAttribute('aria-expanded',String(open)); };
+    const renderExecutorResults=()=>{
+      const query=interventionExecutor.value.trim().toLocaleLowerCase();
+      interventionExecutorResults.replaceChildren();
+      if(!query){ setExecutorResultsOpen(false); return; }
+      const matches=employeeDirectory.filter(person=>`${person.name} ${person.id}`.toLocaleLowerCase().includes(query));
+      if(!matches.length){ const empty=document.createElement('div'); empty.className='executor-empty'; empty.textContent='未找到匹配人员'; interventionExecutorResults.appendChild(empty); }
+      matches.forEach(person=>{
+        const option=document.createElement('button'); option.type='button'; option.className='executor-option'; option.setAttribute('role','option');
+        const name=document.createElement('span'); name.textContent=person.name;
+        const id=document.createElement('small'); id.textContent=`(${person.id})`;
+        option.append(name,id);
+        option.addEventListener('click',()=>{
+          selectedExecutor=person;
+          interventionExecutor.value=`${person.name}(${person.id})`;
+          interventionExecutor.classList.remove('invalid');
+          document.getElementById('interventionExecutorError').classList.remove('show');
+          setExecutorResultsOpen(false);
+          interventionExecutor.focus();
+        });
+        interventionExecutorResults.appendChild(option);
+      });
+      setExecutorResultsOpen(true);
+    };
+    const closeIntervention=()=>{ setNodePopupOpen(false); setExecutorResultsOpen(false); interventionOverlay.hidden=true; interventionTrigger?.focus(); };
+    const updateInterventionFields=()=>{
+      const terminalNode=interventionTo.value==='发起人'||interventionTo.value==='结束';
+      interventionExecutorField.hidden=terminalNode;
+      interventionCommentRequired.hidden=!terminalNode;
+      interventionComment.required=terminalNode;
+      interventionComment.classList.remove('invalid');
+      interventionCommentError.classList.remove('show');
+      if(terminalNode){ setExecutorResultsOpen(false); interventionExecutor.classList.remove('invalid'); document.getElementById('interventionExecutorError').classList.remove('show'); }
+    };
+    const openIntervention=button=>{
+      interventionTrigger=button;
+      interventionTo.value='';
+      document.getElementById('interventionNodeLabel').textContent='请选择';
+      interventionNodeTrigger.classList.add('placeholder');
+      interventionNodeTrigger.classList.remove('invalid');
+      document.getElementById('interventionToError').classList.remove('show');
+      interventionExecutor.value='';
+      selectedExecutor=null;
+      interventionExecutor.classList.remove('invalid');
+      document.getElementById('interventionExecutorError').classList.remove('show');
+      interventionComment.value='';
+      document.getElementById('interventionCount').textContent='0 / 5000';
+      document.getElementById('interventionInfo').hidden=false;
+      document.getElementById('interventionInfoExtra').hidden=false;
+      document.getElementById('interventionInfoToggle').textContent='收起⌃';
+      updateInterventionFields();
+      interventionOverlay.hidden=false;
+      interventionNodeTrigger.focus();
+    };
+    interventionNodeTrigger.addEventListener('click',()=>setNodePopupOpen(interventionNodePopup.hidden));
+    interventionNodeSearch.addEventListener('input',renderNodeOptions);
+    interventionNodeSearch.addEventListener('keydown',event=>{
+      if(event.key==='Enter'){ event.preventDefault(); interventionNodeOptions.querySelector('.node-option')?.click(); }
+      else if(event.key==='Escape'){ event.stopPropagation(); setNodePopupOpen(false); interventionNodeTrigger.focus(); }
+    });
+    interventionExecutor.addEventListener('input',()=>{ selectedExecutor=null; interventionExecutor.classList.remove('invalid'); document.getElementById('interventionExecutorError').classList.remove('show'); renderExecutorResults(); });
+    interventionExecutor.addEventListener('keydown',event=>{
+      if(event.key==='Enter'){ event.preventDefault(); interventionExecutorResults.querySelector('.executor-option')?.click(); }
+      else if(event.key==='Escape'){ event.stopPropagation(); setExecutorResultsOpen(false); }
+    });
+    document.addEventListener('click',event=>{
+      if(!event.target.closest('#interventionNodePicker'))setNodePopupOpen(false);
+      if(!event.target.closest('.executor-picker'))setExecutorResultsOpen(false);
+    });
+    interventionComment.addEventListener('input',()=>{ document.getElementById('interventionCount').textContent=`${interventionComment.value.length} / 5000`; interventionComment.classList.remove('invalid'); interventionCommentError.classList.remove('show'); });
+    interventionOverlay.querySelectorAll('[data-close-intervention]').forEach(button=>button.addEventListener('click',closeIntervention));
+    interventionOverlay.addEventListener('click',event=>{ if(event.target===interventionOverlay)closeIntervention(); });
+    document.addEventListener('keydown',event=>{ if(event.key==='Escape'&&!interventionOverlay.hidden)closeIntervention(); });
+    document.getElementById('interventionInfoClose').addEventListener('click',()=>{ document.getElementById('interventionInfo').hidden=true; });
+    document.getElementById('interventionInfoToggle').addEventListener('click',event=>{
+      const extra=document.getElementById('interventionInfoExtra');
+      extra.hidden=!extra.hidden;
+      event.currentTarget.textContent=extra.hidden?'展开⌄':'收起⌃';
+    });
+    document.getElementById('interventionConfirm').addEventListener('click',()=>{
+      const missingNode=!interventionTo.value;
+      interventionNodeTrigger.classList.toggle('invalid',missingNode);
+      document.getElementById('interventionToError').classList.toggle('show',missingNode);
+      if(missingNode)return;
+      const missingExecutor=!interventionExecutorField.hidden&&!selectedExecutor;
+      interventionExecutor.classList.toggle('invalid',missingExecutor);
+      document.getElementById('interventionExecutorError').classList.toggle('show',missingExecutor);
+      if(missingExecutor)return;
+      const missingComment=interventionComment.required&&!interventionComment.value.trim();
+      interventionComment.classList.toggle('invalid',missingComment);
+      interventionCommentError.classList.toggle('show',missingComment);
+      if(missingComment){ interventionComment.focus(); return; }
+      closeIntervention();
+      showToast('原型演示，未实际干预流程');
+    });
+    document.getElementById('searchForm').addEventListener('submit',event=>{
+      event.preventDefault();
+      const name=document.getElementById('flowName').value.trim().toLowerCase();
+      const no=document.getElementById('approvalNo').value.trim().toLowerCase();
+      const type=document.getElementById('flowType').value;
+      const status=document.getElementById('status').value;
+      const anomalyType=document.getElementById('anomalyType').value;
+      const workflowState=document.getElementById('workflowState').value;
+      render(data.filter(item=>(!name||item[0].toLowerCase().includes(name))&&(!no||item[1].toLowerCase().includes(no))&&(!type||item[2]===type)&&(!status||item[5]===status)&&(!anomalyType||anomalies[item[1]]?.type===anomalyType)&&(!workflowState||(anomalies[item[1]]?'异常':'正常')===workflowState)));
+    });
+    document.getElementById('reset').addEventListener('click',()=>{ document.getElementById('searchForm').reset(); render(data); });
+    rows.addEventListener('click',async event=>{
+      if(event.target.closest('[data-open-flow-detail]')) {
+        if(window.parent===window) location.href='approval-detail-flow.html';
+        else window.parent.postMessage({type:'hrone-open-flow-approval-detail'},'*');
+        return;
+      }
+      const interventionButton=event.target.closest('.node-intervene');
+      if(interventionButton) { openIntervention(interventionButton); return; }
+      const button=event.target.closest('[data-copy]');
+      if(!button)return;
+      try { await navigator.clipboard.writeText(button.dataset.copy); showToast('已复制'); } catch { showToast('复制失败'); }
+    });
+    render(data);
+  </script>
+</body>
+</html>

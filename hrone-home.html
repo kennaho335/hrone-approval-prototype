@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>首页 · HRONE</title>
+  <style>
+    :root{--blue:#1769ff;--ink:#102746;--line:#e8ecf3;--back:#f4f6fa}
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0}
+    body{overflow:hidden;color:var(--ink);background:var(--back);font:12px -apple-system,BlinkMacSystemFont,"Microsoft YaHei","Segoe UI",sans-serif}
+    .topbar{position:absolute;inset:0 0 auto;height:52px;display:flex;align-items:center;border-bottom:1px solid #e9edf4;background:#fff}
+    .brand{display:flex;align-items:center;width:134px;padding-left:28px;color:#062956;font-size:23px;font-weight:800;letter-spacing:1px;white-space:nowrap}
+    .logo-o{position:relative;width:20px;height:20px;margin:0 1px;border-radius:50%;background:conic-gradient(#ff9d0a 0 24%,#0565d4 24% 54%,#18b8bc 54% 73%,#fa9c08 73% 100%)}
+    .logo-o:after{content:"";position:absolute;inset:5px;border-radius:50%;background:#fff}
+    .home-symbol{width:34px;color:#697b97;text-align:center;font-size:18px}
+    .all-menu{height:24px;display:flex;align-items:center;gap:6px;margin-left:1px;padding:0 10px;border:1px solid #e2e6ed;border-radius:4px;color:#102746;background:#fff;font-size:13px;white-space:nowrap}
+    .app-mark{color:#16b9c9;font-size:14px;line-height:1;text-shadow:5px 0 #ffad22,-4px 0 #3d81ff}
+    .top-tools{display:flex;align-items:center;gap:10px;margin-left:auto;padding-right:17px}
+    .round-tool{position:relative;width:37px;height:37px;display:grid;place-items:center;border-radius:50%;color:#8a929d;background:#fff;box-shadow:0 1px 10px #142b4c0f;font-size:15px}
+    .badge{position:absolute;top:-2px;right:-5px;min-width:17px;height:15px;padding:0 3px;border-radius:9px;color:#fff;background:#ff4d51;font-size:11px;line-height:15px;text-align:center}
+    .account{height:29px;display:flex;align-items:center;gap:5px;padding:0 10px;border:1px solid #eceef2;border-radius:16px;color:#888;background:#fff;white-space:nowrap;font-size:12px}
+    .account-icon{width:15px;height:15px;display:grid;place-items:center;border-radius:50%;color:#fff;background:#a7adb5;font-size:10px}
+    .sidebar{position:absolute;top:52px;bottom:0;left:0;width:220px;display:flex;flex-direction:column;overflow:auto;border-right:1px solid #e7ebf0;background:#fff}
+    .side-item{flex:0 0 40px;display:flex;align-items:center;gap:9px;margin:0 4px;padding:0 24px;border-radius:8px;color:#172a46;white-space:nowrap;font-size:14px}
+    .side-item.active{color:var(--blue);background:#eaf0ff}
+    .side-item .icon{width:17px;color:#7589a6;text-align:center}
+    .side-item.active .icon{color:var(--blue)}
+    .side-item .chev{margin-left:auto;color:#7b8796}
+    .sidebar-footer{position:sticky;bottom:0;flex:0 0 22px;margin-top:auto;border-top:1px solid #f1f2f4;background:#fff;color:#2675ff;text-align:right;padding-right:18px}
+    .content{position:absolute;inset:52px 0 0 220px;display:flex;flex-direction:column;min-width:0;min-height:0}
+    .page-tabs{flex:0 0 42px;display:flex;align-items:stretch;margin:0 10px;padding:0 4px;border-radius:8px;background:#f8faff}
+    .page-tab{position:relative;min-width:60px;display:grid;place-items:center;padding:0 16px;color:#172b46;font-size:12px}
+    .page-tab.active{color:#0966ff;font-weight:600}
+    .page-tab.active:after{content:"";position:absolute;right:0;bottom:0;left:0;height:2px;background:#1769ff}
+    .page-tab-button{border:0;background:transparent;font:inherit;cursor:pointer}
+    .page-tab-arrow{margin-left:auto;align-self:center;padding-right:10px;color:#1769ff;font-size:16px}
+    .cards-grid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:9px 10px 15px}
+    .card{min-width:0;min-height:0;border-radius:8px;background:#fff;box-shadow:0 2px 6px #1e304b0d;overflow:hidden}
+    .card-head{height:63px;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--line);font-size:14px;font-weight:700}
+    .card-head .head-icon{color:var(--blue);font-size:18px}
+    .card-link{margin-left:auto;color:var(--blue);font-size:12px;font-weight:400;white-space:nowrap}
+    .filters{height:45px;display:flex;align-items:center;gap:7px;padding:0 12px;overflow:auto;scrollbar-width:none;white-space:nowrap}
+    .filters::-webkit-scrollbar{display:none}
+    .filter{padding:4px 10px;border-radius:13px;background:#f2f4f7;color:#24364f;font-size:12px;line-height:15px}
+    .filter.active{color:#fff;background:var(--blue)}
+    .todo-row{min-height:58px;display:flex;align-items:center;gap:14px;margin:0 12px;padding:6px 14px;background:#f8faff;border-radius:7px}
+    .todo-avatar{flex:none;width:25px;height:25px;display:grid;place-items:center;border:2px solid #20c9cb;border-radius:50%;color:#20c9cb;font-size:13px;font-weight:700}
+    .todo-text{min-width:0;flex:1;line-height:19px}
+    .todo-title{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:700}
+    .todo-description{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .todo-action{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px;color:var(--blue);white-space:nowrap}
+    .todo-action-row{display:flex;align-items:center;gap:8px}
+    .todo-action button{padding:0;border:0;color:var(--blue);background:transparent;font:inherit;cursor:pointer}
+    .todo-time{color:#9aa6b7}
+    .empty-state{display:flex;flex-direction:column;align-items:center;margin-top:3px}
+    .empty-art{width:115px;height:116px}
+    .empty-text{margin-top:2px;color:#182337;font-size:14px}
+    .void-overlay{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:12px;background:rgba(0,0,0,.38)}
+    .void-overlay[hidden],.void-info[hidden]{display:none}
+    .void-dialog{width:min(600px,100%);max-height:calc(100vh - 24px);display:flex;flex-direction:column;overflow:hidden;border-radius:7px;background:#fff;box-shadow:0 12px 30px #0003;font-size:12px;outline:none}
+    .void-head{flex:0 0 55px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;color:#1769ff;background:#eef2ff;font-size:14px;font-weight:700}
+    .void-close{width:20px;height:20px;padding:0;border:0;color:#8b939f;background:transparent;font-size:22px;font-weight:300;line-height:20px;cursor:pointer}
+    .void-body{flex:1;min-height:0;overflow:auto;padding:10px 18px 30px}
+    .void-info{min-height:38px;display:flex;align-items:center;gap:8px;padding:5px 7px;border:1px solid #8cc9ff;border-radius:5px;color:#6e7884;background:#e6f6ff}
+    .void-info-icon{flex:0 0 23px;width:23px;height:23px;display:grid;place-items:center;border:2px solid #1680ff;border-radius:50%;color:#1680ff;font-size:15px;font-weight:700;line-height:1}
+    .void-info-text{flex:1}
+    .void-info-close{align-self:flex-start;padding:0;border:0;color:#8b939f;background:transparent;font-size:17px;line-height:16px;cursor:pointer}
+    .void-field{margin-top:13px}
+    .void-field label{display:block;margin-bottom:7px;color:#30363f}
+    .void-field .required{margin-right:3px;color:#ff4d4f}
+    .void-field textarea{width:100%;height:67px;display:block;padding:8px 10px;border:1px solid #d9d9d9;border-radius:5px;color:#354154;background:#fff;font:inherit;resize:vertical}
+    .void-field textarea:focus{outline:none;border-color:#9bc4ff}
+    .void-field textarea.invalid,.void-field textarea.invalid:focus{border-color:#ff4d4f}
+    .void-error{display:none;margin-top:3px;color:#ff4d4f}
+    .void-error.show{display:block}
+    .void-count{color:#999;text-align:right;line-height:20px}
+    .void-foot{flex:0 0 51px;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 18px;border-top:1px solid #eee}
+    .void-foot button{height:30px;padding:0 12px;border:1px solid #d9d9d9;border-radius:5px;color:#4a5059;background:#fff;font:inherit;cursor:pointer}
+    .void-foot button.primary{border-color:#1769ff;color:#fff;background:#1769ff}
+    .void-toast{position:fixed;z-index:11;right:20px;bottom:20px;display:none;padding:9px 13px;border-radius:5px;color:#fff;background:#33435a;box-shadow:0 3px 10px #0002}
+    .void-toast.show{display:block}
+    @media(max-width:1250px){.sidebar{width:164px}.content{left:164px}.brand{width:110px;padding-left:14px}.top-tools{gap:3px}.card-head{padding:0 12px}.filters{gap:4px;padding:0 9px}.filter{padding:4px 7px;font-size:11px}.todo-row{gap:8px;margin:0 8px;padding:6px 8px}.todo-text{font-size:10px}.todo-action{font-size:10px}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="brand" aria-label="HRONE">HR<span class="logo-o" aria-hidden="true"></span>NE</div><span class="home-symbol">⌂</span><div class="all-menu"><span class="app-mark">✣</span>全部菜单 <span>⌄</span></div><div class="top-tools"><div class="round-tool">⌕</div><div class="round-tool">◎</div><div class="round-tool">☑<span class="badge">1</span></div><div class="round-tool">♧</div><div class="account"><span class="account-icon">●</span>许大庆</div></div></header>
+  <aside class="sidebar" aria-label="业务菜单">
+    <div class="side-item active"><span class="icon">▦</span>首页</div>
+    <div class="side-item"><span class="icon">♧</span>审批通知中心<span class="chev">⌄</span></div>
+    <div class="side-item"><span class="icon">▣</span>我的人事<span class="chev">⌄</span></div>
+    <div class="side-item"><span class="icon">▣</span>我的假勤<span class="chev">⌄</span></div>
+    <div class="side-item"><span class="icon">♧</span>我的团队<span class="chev">⌄</span></div>
+    <div class="side-item"><span class="icon">⌁</span>绩效工作台<span class="chev">⌄</span></div>
+    <div class="sidebar-footer">◁|</div>
+  </aside>
+  <main class="content">
+    <nav class="page-tabs" aria-label="页面标签"><span class="page-tab active">首页</span><button class="page-tab page-tab-button" id="myApplicationTab" type="button">我的申请</button><span class="page-tab-arrow">⌄</span></nav>
+    <div class="cards-grid">
+      <section class="card" aria-label="我的待办">
+        <div class="card-head"><span class="head-icon">▣</span>我的待办 (1)<span class="card-link">▣ 待办中心 &gt;</span></div>
+        <div class="filters"><span class="filter active">全部 (1)</span><span class="filter">组织</span><span class="filter">招聘</span><span class="filter">人事</span><span class="filter">考勤</span><span class="filter">绩效 (1)</span><span class="filter">薪酬</span></div>
+        <div class="todo-row"><span class="todo-avatar">黄</span><div class="todo-text"><div class="todo-title">请处理：你提交的 移动端离职6的离职申请已撤回！</div></div><div class="todo-action"><div class="todo-action-row"><span>◯ 去处理</span><button id="openHomeVoid" type="button">作废</button></div><span class="todo-time">10分钟前</span></div></div>
+      </section>
+      <section class="card" aria-label="我的通知">
+        <div class="card-head"><span class="head-icon">♟</span>我的通知<span class="card-link">▤ 通知中心 &gt;</span></div>
+        <div class="filters"><span class="filter active">全部</span><span class="filter">审批通知</span><span class="filter">系统通知</span><span class="filter">导出通知</span></div>
+        <div class="empty-state"><svg class="empty-art" viewBox="0 0 115 116" aria-hidden="true"><ellipse cx="58" cy="99" rx="48" ry="8" fill="#f3f5f8"/><path d="M31 61h54l9 29H22z" fill="#d8dde4"/><path d="M31 61h54v27H31z" fill="#e7ebf0"/><path d="M42 26h43v52H42z" fill="#e0e5eb"/><path d="M48 36h30M48 45h30M48 54h24" stroke="#c6cfd8" stroke-width="3"/><path d="M26 80h20l5 7h14l5-7h20" fill="none" stroke="#bdc7d2" stroke-width="3"/><circle cx="89" cy="18" r="13" fill="#dce1e7"/><circle cx="83" cy="18" r="2" fill="#fff"/><circle cx="89" cy="18" r="2" fill="#fff"/><circle cx="95" cy="18" r="2" fill="#fff"/></svg><div class="empty-text">暂无通知</div></div>
+      </section>
+    </div>
+  </main>
+  <div class="void-overlay" id="voidOverlay" hidden>
+    <section class="void-dialog" role="dialog" aria-modal="true" aria-labelledby="voidTitle" tabindex="-1">
+      <div class="void-head"><span id="voidTitle">作废</span><button class="void-close" type="button" data-close-void aria-label="关闭">×</button></div>
+      <div class="void-body">
+        <div class="void-info" id="voidInfo"><span class="void-info-icon" aria-hidden="true">i</span><span class="void-info-text">作废后，将会终止流程，并且不可恢复</span><button class="void-info-close" id="voidInfoClose" type="button" aria-label="关闭提示">×</button></div>
+        <div class="void-field"><label for="voidReason"><span class="required">*</span>作废原因</label><textarea id="voidReason" maxlength="2000" required aria-describedby="voidReasonError"></textarea><div class="void-error" id="voidReasonError">必填项不能为空</div><div class="void-count" id="voidCount">0 / 2000</div></div>
+      </div>
+      <div class="void-foot"><button type="button" data-close-void>取消</button><button class="primary" id="voidConfirm" type="button">确定</button></div>
+    </section>
+  </div>
+  <div class="void-toast" id="voidToast" role="status"></div>
+  <script>
+    document.getElementById('myApplicationTab').addEventListener('click',()=>{
+      if(window.parent!==window)window.parent.postMessage({type:'hrone-open-my-application'},'*');
+      else window.location.href='void.html';
+    });
+    const voidOverlay=document.getElementById('voidOverlay');
+    const voidDialog=voidOverlay.querySelector('.void-dialog');
+    const voidReason=document.getElementById('voidReason');
+    const voidReasonError=document.getElementById('voidReasonError');
+    const voidCount=document.getElementById('voidCount');
+    const voidTrigger=document.getElementById('openHomeVoid');
+    const closeVoid=()=>{voidOverlay.hidden=true;voidTrigger.focus();};
+    voidTrigger.addEventListener('click',()=>{
+      voidReason.value='';
+      voidCount.textContent='0 / 2000';
+      voidReason.classList.remove('invalid');
+      voidReasonError.classList.remove('show');
+      document.getElementById('voidInfo').hidden=false;
+      voidOverlay.hidden=false;
+      voidDialog.focus();
+    });
+    voidOverlay.querySelectorAll('[data-close-void]').forEach(button=>button.addEventListener('click',closeVoid));
+    voidOverlay.addEventListener('click',event=>{if(event.target===voidOverlay)closeVoid();});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!voidOverlay.hidden)closeVoid();});
+    document.getElementById('voidInfoClose').addEventListener('click',()=>{document.getElementById('voidInfo').hidden=true;});
+    voidReason.addEventListener('input',()=>{
+      voidCount.textContent=`${voidReason.value.length} / 2000`;
+      voidReason.classList.remove('invalid');
+      voidReasonError.classList.remove('show');
+    });
+    document.getElementById('voidConfirm').addEventListener('click',()=>{
+      const missingReason=!voidReason.value.trim();
+      voidReason.classList.toggle('invalid',missingReason);
+      voidReasonError.classList.toggle('show',missingReason);
+      if(missingReason){voidReason.focus();return;}
+      closeVoid();
+      const toast=document.getElementById('voidToast');
+      toast.textContent='原型演示，未实际作废流程';
+      toast.classList.add('show');
+      clearTimeout(toast.dismissTimer);
+      toast.dismissTimer=setTimeout(()=>toast.classList.remove('show'),1800);
+    });
+  </script>
+</body>
+</html>

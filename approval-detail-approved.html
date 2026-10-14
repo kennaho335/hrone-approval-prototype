@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>移动端离职4的离职申请 · 同意后</title>
+  <style>
+    :root { --blue:#1677ff; --line:#edf0f4; --muted:#7a8798; --bg:#f5f7fb; }
+    * { box-sizing:border-box; }
+    body { margin:0; overflow:hidden; color:#18253a; background:var(--bg); font:14px -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
+    .page { height:100dvh; min-height:0; }
+    .topbar { height:52px; display:flex; align-items:center; border-bottom:1px solid #edf0f4; background:#fff; }
+    .brand { margin-left:28px; width:114px; color:#0f4c99; font-size:21px; font-weight:800; letter-spacing:1px; }.brand b { color:#ffae00; }.home { color:#7f8b99; font-size:17px; }.all { margin-left:16px; padding:5px 11px; border:1px solid #dfe4ea; border-radius:3px; font-size:12px; }.tools { display:flex; align-items:center; gap:12px; margin-left:auto; padding-right:22px; color:#6d7886; }.search { width:202px; padding:9px 14px; border-radius:18px; box-shadow:0 2px 9px rgba(0,0,0,.08); color:#b5bdc8; font-size:12px; }.circle { width:29px; height:29px; display:grid; place-items:center; border-radius:50%; box-shadow:0 2px 9px rgba(0,0,0,.08); }.count { position:relative; }.count:before { content:attr(data-count); position:absolute; top:-10px; right:-12px; min-width:25px; padding:1px 4px; border-radius:10px; background:#ff4d4f; color:#fff; text-align:center; font-size:11px; }.account { padding:7px 11px; border-radius:15px; box-shadow:0 2px 9px rgba(0,0,0,.08); color:#7d8794; font-size:12px; }
+    .sidebar { position:absolute; top:52px; bottom:0; left:0; width:220px; padding-top:4px; border-right:1px solid #edf0f4; background:#fff; }.menu { display:flex; align-items:center; height:40px; margin:0 4px; padding:0 23px; border-radius:8px; color:#26364a; }.menu.active { color:#1677ff; background:#eef4ff; }.menu .chev { margin-left:auto; }.menu.sub { height:44px; padding-left:54px; }.menu.group { margin-top:6px; }
+    .workspace { position:absolute; top:52px; left:220px; right:0; bottom:0; }.crumb { height:42px; margin:0 10px; display:flex; align-items:center; gap:28px; padding:0 18px; background:#f6f8fc; font-size:12px; }.crumb .active { align-self:stretch; display:flex; align-items:center; border-bottom:2px solid var(--blue); color:var(--blue); }
+    .title-card { height:101px; margin:9px 10px; display:flex; align-items:center; padding:0 24px; border:1px solid #eef1f5; border-radius:8px; background:#fff; }.avatar { width:54px; height:54px; display:grid; place-items:center; border:2px solid #287bff; border-radius:50%; color:#1677ff; font-size:20px; }.title-copy { margin-left:14px; }.title-line { display:flex; align-items:center; gap:10px; font-size:21px; font-weight:700; }.status { padding:3px 8px; border:1px solid #91caff; border-radius:3px; color:#1677ff; background:#eef7ff; font-size:12px; font-weight:400; }.meta { display:flex; gap:16px; margin-top:8px; color:#5b6877; font-size:12px; }.meta a { color:#457fcb; text-decoration:none; }.title-actions { display:flex; gap:10px; margin-left:auto; }.title-actions button { height:31px; padding:0 12px; border:1px solid #1677ff; border-radius:6px; color:#1677ff; background:#fff; cursor:pointer; }.title-actions .primary { color:#fff; background:#1677ff; }
+    .body-grid { position:absolute; inset:163px 10px 0; display:grid; grid-template-columns:minmax(0, 1fr) 430px; gap:10px; }.form-pane,.record-pane { min-height:0; overflow:auto; scrollbar-color:#9099a8 transparent; }.panel { margin-bottom:10px; border-radius:8px; background:#fff; overflow:hidden; }.panel-head { height:46px; display:flex; align-items:center; padding:0 17px; border-bottom:1px solid #e8ecf1; color:#13243b; font-size:16px; font-weight:700; }.panel-head .caret { margin-right:13px; font-size:11px; }.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px 12px; padding:18px 16px 28px; }.field label { display:block; margin:0 0 8px; color:#596b82; font-size:12px; }.field label.required:before { content:"*"; color:#ff4d4f; padding-right:4px; }.value { height:30px; display:flex; align-items:center; padding:0 12px; border:1px solid #edf0f4; border-radius:4px; color:#102c54; background:#fbfbfc; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }.value.muted { color:#adb6c1; }.value .right { margin-left:auto; color:#b7bec7; }.single { grid-column:1 / span 1; }.handover .form-grid { padding-bottom:30px; }.todo { padding:10px 16px 30px; }.todo-tag { display:inline-block; padding:4px 7px; border-radius:4px; color:#9b7417; background:#fff5d6; font-size:12px; }.todo-box { height:56px; margin-top:12px; border-radius:4px; background:#f7f8fa; }
+    .record-pane { border-radius:8px; background:#fff; }.record-title { height:55px; display:flex; align-items:center; padding:0 25px; border-bottom:1px solid #e8ecf1; color:#15233a; font-size:16px; font-weight:700; }.record-title .icon { margin-right:11px; color:#1677ff; font-size:20px; }.timeline { position:relative; padding:18px 25px 26px 50px; }.timeline:before { content:""; position:absolute; left:28px; top:31px; bottom:0; border-left:1px dashed #1db653; }.record { position:relative; padding:0 0 21px; }.dot { position:absolute; left:-28px; top:7px; width:12px; height:12px; border:3px solid #fff; border-radius:50%; background:#1db653; box-shadow:0 0 0 1px #1db653; }.record.first .dot { background:#fff; box-shadow:0 0 0 3px #9ea8b3; }.record-head { display:flex; align-items:center; font-weight:700; font-size:15px; }.duration { margin-left:auto; color:#65717f; font-weight:400; font-size:12px; }.actor { display:flex; align-items:center; gap:10px; margin-top:13px; }.actor-icon { width:25px; height:25px; display:grid; place-items:center; border:1px solid #00bed6; border-radius:50%; color:#00bed6; font-size:13px; }.actor-icon.orange { border-color:#ff9c27; color:#ff9c27; }.actor-name { color:#172d4b; font-size:12px; }.time { margin-left:auto; color:#788594; font-size:12px; }.result { margin-top:13px; padding:8px; border-radius:5px; color:#00a870; background:#f6f8fa; font-size:12px; }
+    .modal-mask { position:fixed; z-index:10; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.45); }.modal-mask.show { display:flex; }.modal { width:520px; overflow:hidden; border-radius:8px; background:#fff; box-shadow:0 12px 32px rgba(0,0,0,.2); }.modal-head { height:54px; display:flex; align-items:center; padding:0 20px; border-bottom:1px solid #edf0f4; color:#17233d; font-size:17px; font-weight:700; }.modal-close { margin-left:auto; border:0; color:#7d8794; background:transparent; font-size:20px; cursor:pointer; }.modal-body { padding:24px 28px 20px; }.modal-field { margin-bottom:23px; }.modal-label { display:block; margin-bottom:10px; color:#26364a; }.required:before { content:"*"; margin-right:4px; color:#ff4d4f; }.radio-group { display:flex; gap:26px; }.radio { display:flex; align-items:center; gap:7px; color:#26364a; cursor:pointer; }.radio input { width:16px; height:16px; accent-color:#1677ff; }.person-entry { min-height:40px; display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding:4px 8px; border:1px solid #dfe4ec; border-radius:5px; }.person-entry:focus-within { border-color:#1677ff; box-shadow:0 0 0 2px rgba(22,119,255,.12); }.person-tag { display:flex; align-items:center; gap:5px; height:27px; padding:0 8px; border-radius:3px; color:#175bb4; background:#eef6ff; font-size:12px; }.remove-person { border:0; padding:0; color:#5c84bb; background:transparent; cursor:pointer; }.person-input { min-width:190px; height:29px; flex:1; border:0; outline:0; font:inherit; }.hint { margin-top:7px; color:#9aa5b1; font-size:12px; }.error { display:none; margin-top:7px; color:#ff4d4f; font-size:12px; }.error.show { display:block; }.modal-foot { height:64px; display:flex; justify-content:flex-end; align-items:center; gap:10px; padding:0 20px; border-top:1px solid #edf0f4; }.modal-foot button { height:32px; padding:0 16px; border:1px solid #d8dee8; border-radius:5px; color:#26364a; background:#fff; cursor:pointer; }.modal-foot .confirm { color:#fff; border-color:#1677ff; background:#1677ff; }.toast { position:fixed; z-index:11; right:24px; top:68px; display:none; padding:10px 14px; border-radius:5px; color:#1e2c3b; background:#fff; box-shadow:0 5px 16px rgba(0,0,0,.16); }.toast.show { display:block; }
+    .modal { overflow:visible; }.modal-head { border-radius:8px 8px 0 0; }.modal-foot { border-radius:0 0 8px 8px; }
+    .radio-help { position:relative; display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; margin-left:-3px; border:1px solid #a8b2be; border-radius:50%; color:#7f8b9a; background:#fff; font-size:11px; line-height:1; cursor:help; }
+    .radio-help .tooltip { position:absolute; z-index:20; left:50%; bottom:calc(100% + 10px); width:max-content; max-width:210px; padding:7px 10px; transform:translateX(-50%); border-radius:4px; color:#fff; background:#303b4c; box-shadow:0 3px 9px rgba(0,0,0,.18); font-size:12px; font-weight:400; visibility:hidden; opacity:0; pointer-events:none; transition:opacity .12s; }
+    .radio-help .tooltip:after { content:""; position:absolute; top:100%; left:calc(50% - 5px); border:5px solid transparent; border-top-color:#303b4c; }.radio-help:hover .tooltip,.radio-help:focus .tooltip { visibility:visible; opacity:1; }
+    .person-picker { position:relative; display:flex; width:100%; }.person-entry { flex:1; min-width:0; min-height:32px; flex-wrap:nowrap; gap:4px; padding:0 6px; border-color:#6f9cff; border-radius:4px 0 0 4px; }.person-entry:focus-within { box-shadow:none; }.person-entry #personTags { display:flex; flex-wrap:wrap; gap:5px; }.person-input { min-width:60px; height:29px; font-size:12px; }.person-input::placeholder { color:#aab3bf; }.picker-chevron { flex:0 0 20px; border:0; color:#a7b0bc; background:transparent; cursor:pointer; font-size:14px; }.separator-mode { flex:0 0 100px; height:32px; display:flex; align-items:center; justify-content:space-between; padding:0 8px; border:1px solid #dfe4ec; border-left:0; border-radius:0 4px 4px 0; color:#455264; background:#fff; font-size:12px; white-space:nowrap; }.separator-mode span { color:#b2bac5; }
+    .person-results { position:absolute; z-index:15; top:calc(100% + 4px); left:0; width:calc(100% - 100px); max-height:200px; overflow:auto; display:none; border:1px solid #d9e0ea; border-radius:5px; background:#fff; box-shadow:0 8px 18px rgba(28,44,65,.14); }.person-results.show { display:block; }.person-option { width:100%; min-height:43px; display:flex; align-items:center; gap:9px; padding:8px 12px; border:0; border-bottom:1px solid #f1f3f6; color:#1c2c42; background:#fff; text-align:left; cursor:pointer; }.person-option:hover,.person-option:focus { background:#eef6ff; }.person-option .option-id { margin-left:auto; color:#8591a0; font-size:12px; }.person-empty { padding:13px 12px; color:#8793a1; font-size:12px; }
+    .record.pending .dot { border:1.5px solid #1677ff; background:#fff; box-shadow:none; }.record.pending .dot:before { content:""; position:absolute; left:4px; top:2px; width:1px; height:4px; background:#1677ff; }.record.pending .dot:after { content:""; position:absolute; left:4px; top:5px; width:3px; height:1px; background:#1677ff; transform:rotate(35deg); transform-origin:left center; }
+    .result.sign-action { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }.sign-action-time { flex:none; color:#788594; white-space:nowrap; }
+    .title-actions .is-hidden { display:none; }
+    @media (max-width:1280px) { .tools { gap:8px; }.search { width:150px; }.account { display:none; }.body-grid { grid-template-columns:minmax(0,1fr) 390px; }.title-card { padding:0 18px; }.title-line { font-size:19px; }.meta { gap:9px; }.title-actions button { padding:0 8px; } }
+    @media (max-width:960px) { .sidebar { width:164px; }.workspace { left:164px; }.brand { width:105px; margin-left:18px; }.all,.search { display:none; }.tools { padding-right:12px; }.body-grid { grid-template-columns:minmax(560px,1fr) 330px; }.form-grid { gap:14px 10px; }.title-card { padding:0 14px; }.title-actions { gap:5px; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar"><div class="brand">HR<b>O</b>NE</div><div class="home">⌂</div><div class="all">👥　全部菜单　⌄</div><div class="tools"><div class="search">快捷菜单搜索　　⌕</div><div class="circle">◎</div><div class="circle count" data-count="497">✉</div><div class="circle count" data-count="57">♟</div><div class="account">◉ CoreHR实施账号2</div></div></header>
+    <aside class="sidebar"><div class="menu active">▦　首页</div><div class="menu group">♧　审批通知中心 <span class="chev">⌃</span></div><div class="menu sub">·　我的待办</div><div class="menu sub">·　我的审批</div><div class="menu sub">·　我的申请</div><div class="menu sub">·　我的通知</div><div class="menu group">▤　我的人事 <span class="chev">⌄</span></div><div class="menu">▣　我的假勤 <span class="chev">⌄</span></div><div class="menu">♧　我的团队 <span class="chev">⌄</span></div><div class="menu">⌁　绩效工作台 <span class="chev">⌄</span></div></aside>
+    <main class="workspace"><nav class="crumb"><span>首页</span><span>我的待办</span><span class="active">移动端离职4的离职申请</span></nav><section class="title-card"><div class="avatar">雷</div><div class="title-copy"><div class="title-line">移动端离职4的离职申请 <span class="status">审批中</span></div><div class="meta"><span>♙ 审批编号：<a href="#">P202610101954030031</a></span><span>♙ 发起人：雷佳俊(zt20292)</span><span>◷ 发起日期：2026/10/10</span></div></div><div class="title-actions"><button>♧ 催办</button><button class="primary" id="agree">◉ 同意</button><button id="disagree" class="is-hidden">⊗ 不同意</button><button id="addSigner">＋ 加签</button><button id="viewFlow">⊙ 查看流程图</button></div></section>
+      <div class="body-grid"><div class="form-pane"><section class="panel"><div class="panel-head"><span class="caret">▲</span>员工信息</div><div class="form-grid"><div class="field"><label class="required">员工</label><div class="value">移动端离职4(zt9900130)</div></div><div class="field"><label>入职日期</label><div class="value">2026-03-01 <span class="right">▣</span></div></div><div class="field"><label>部门全称</label><div class="value">WX/test5权限组织1</div></div><div class="field"><label>职位</label><div class="value">test5-组织1-职位111111111111111111111</div></div><div class="field"><label>职级</label><div class="value">P4-3</div></div><div class="field"><label>工作地区</label><div class="value muted">请选择 <span class="right">⌄</span></div></div><div class="field single"><label>合同主体</label><div class="value">YunExpress UK Ltd</div></div></div></section><section class="panel handover"><div class="panel-head"><span class="caret">▲</span>离职信息</div><div class="form-grid"><div class="field"><label>离职日期</label><div class="value">2026-10-10 <span class="right">▣</span></div></div><div class="field"><label>离职交接人</label><div class="value">雷佳俊(zt20292) <span class="right">⌄</span></div></div></div></section><section class="panel"><div class="panel-head"><span class="caret">▲</span>离职待办</div><div class="todo"><span class="todo-tag">交接法务系统待办</span><div class="todo-box"></div></div></section></div>
+      <aside class="record-pane"><div class="record-title"><span class="icon">♧</span>审批记录</div><div class="timeline"><article class="record first"><span class="dot"></span><div class="record-head">发起人</div><div class="actor"><span class="actor-icon">雷</span><span class="actor-name">雷佳俊<br>(zt20292)</span><span class="time">◷ 2026/10/10 19:54</span></div><div class="result">提交</div></article><article class="record"><span class="dot"></span><div class="record-head">直接上级 <span class="duration">⌛ 1分钟</span></div><div class="actor"><span class="actor-icon">雷</span><span class="actor-name">雷佳俊<br>(zt20292)</span><span class="time">◷ 2026/10/10 19:54~2026/10/10 19:54</span></div><div class="result">同意</div></article><article class="record"><span class="dot"></span><div class="record-head">HRBP <span class="duration">⌛ 1分钟</span></div><div class="actor"><span class="actor-icon orange">雷</span><span class="actor-name">雷佳俊<br>(zt20292)</span><span class="time">◷ 2026/10/10 19:54~2026/10/10 19:55</span></div><div class="result">同意</div></article><article class="record"><span class="dot"></span><div class="record-head">HRBP经理审核 <span class="duration">⌛ 1分钟</span></div><div class="actor"><span class="actor-icon">雷</span><span class="actor-name">雷佳俊<br>(zt20292)</span><span class="time">◷ 2026/10/10 19:55~2026/10/10 19:55</span></div><div class="result">同意</div></article><article class="record"><span class="dot"></span><div class="record-head">HRBP负责人审批 <span class="duration">⌛ 1分钟</span></div><div class="actor"><span class="actor-icon">雷</span><span class="actor-name">雷佳俊<br>(zt20292)</span><span class="time">◷ 2026/10/10 19:55~2026/10/10 19:55</span></div></article></div></aside></div>
+    </main>
+  </div>
+  <div class="modal-mask" id="addSignerModal" aria-hidden="true"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><header class="modal-head"><span id="modalTitle">加签</span><button class="modal-close" id="closeModal" aria-label="关闭">×</button></header><div class="modal-body"><div class="modal-field"><label class="modal-label required">加签类型</label><div class="radio-group"><label class="radio"><input type="radio" name="signType" value="前加签">前加签</label><span class="radio-help" tabindex="0" aria-label="前加签说明">?<span class="tooltip" role="tooltip">被加签人先审批</span></span><label class="radio"><input type="radio" name="signType" value="后加签">后加签</label><span class="radio-help" tabindex="0" aria-label="后加签说明">?<span class="tooltip" role="tooltip">被加签人后审批</span></span></div><div class="error" id="typeError">请选择加签类型</div></div><div class="modal-field"><label class="modal-label required" for="personInput">加签人员</label><div class="person-picker"><div class="person-entry" id="personEntry"><div id="personTags"></div><input id="personInput" class="person-input" placeholder="请通过工号/姓名搜索" autocomplete="off" aria-label="加签人员" aria-controls="personResults" aria-expanded="false"><button class="picker-chevron" id="personToggle" type="button" aria-label="展开人员列表">⌄</button></div><div class="separator-mode" aria-label="人员输入分隔方式">逗号隔开<span>⌄</span></div><div class="person-results" id="personResults" role="listbox" aria-label="人员搜索结果"></div></div><div class="hint">搜索姓名或工号，可多选人员</div><div class="error" id="personError">请添加至少一名加签人员</div></div></div><footer class="modal-foot"><button id="cancelModal">取消</button><button class="confirm" id="confirmAddSigner">确认加签</button></footer></section></div><div class="toast" id="toast" role="status"></div>
+  <script>
+    const modal = document.getElementById('addSignerModal');
+    const personInput = document.getElementById('personInput');
+    const employeeDirectory = Array.isArray(window.HRONE_EMPLOYEES) ? window.HRONE_EMPLOYEES : [
+      { name:'雷佳俊', id:'zt20292' }, { name:'移动端离职4', id:'zt9900130' }, { name:'许大庆', id:'zt25050' }
+    ];
+    const tags = [];
+    const results = document.getElementById('personResults');
+    const setResultsOpen = open => { results.classList.toggle('show',open); personInput.setAttribute('aria-expanded',String(open)); };
+    const renderResults = () => {
+      const query = personInput.value.trim().toLocaleLowerCase();
+      if (!query) { results.replaceChildren(); setResultsOpen(false); return; }
+      const matches = employeeDirectory.filter(person => !tags.some(selected => selected.id === person.id) && (`${person.name} ${person.id}`).toLocaleLowerCase().includes(query));
+      results.replaceChildren();
+      if (!matches.length) { const empty=document.createElement('div'); empty.className='person-empty'; empty.textContent='未找到匹配人员'; results.appendChild(empty); }
+      matches.forEach(person => { const option=document.createElement('button'); option.type='button'; option.className='person-option'; option.setAttribute('role','option'); const name=document.createElement('span'); name.textContent=person.name; const id=document.createElement('span'); id.className='option-id'; id.textContent=person.id; option.append(name,id); option.addEventListener('click',()=>selectPerson(person)); results.appendChild(option); });
+      setResultsOpen(true);
+    };
+    const showModal = () => { modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); personInput.focus(); };
+    const hideModal = () => { setResultsOpen(false); modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); };
+    const renderTags = () => { const box=document.getElementById('personTags'); box.replaceChildren(); tags.forEach((person,index)=>{ const tag=document.createElement('span'); tag.className='person-tag'; tag.textContent=`${person.name}(${person.id})`; const remove=document.createElement('button'); remove.className='remove-person'; remove.type='button'; remove.textContent='×'; remove.setAttribute('aria-label',`移除 ${person.name}`); remove.addEventListener('click',()=>{ tags.splice(index,1); renderTags(); renderResults(); }); tag.appendChild(remove); box.appendChild(tag); }); };
+    const selectPerson = person => { tags.push(person); personInput.value=''; renderTags(); document.getElementById('personError').classList.remove('show'); renderResults(); personInput.focus(); };
+    const toast = message => { const el=document.getElementById('toast'); el.textContent=message; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); };
+    const displayTime = () => {
+      const parts = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+      const part = type => parts.find(item => item.type === type).value;
+      return `${part('year')}/${part('month')}/${part('day')} ${part('hour')}:${part('minute')}`;
+    };
+    let lastSignTime = '';
+    let lastSignMode = '';
+    let lastSigners = [];
+    const postSignButtons = () => {
+      document.getElementById('addSigner').classList.add('is-hidden');
+      document.getElementById('viewFlow').classList.add('is-hidden');
+      document.getElementById('disagree').classList.remove('is-hidden');
+    };
+    const existingPending = document.querySelector('.timeline > .record:last-child');
+    existingPending.classList.add('pending');
+    const pendingTime = existingPending.querySelector('.time');
+    pendingTime.textContent = pendingTime.textContent.split('~')[0];
+    const completeExistingPending = (operationTime, isSignAction = false, selectedSigners = []) => {
+      existingPending.classList.remove('pending');
+      pendingTime.textContent = `${pendingTime.textContent.split('~')[0]}~${operationTime}`;
+      if (isSignAction) {
+        const result = document.createElement('div');
+        result.className = 'result sign-action';
+        const people = selectedSigners.length ? selectedSigners : [{name:'许大庆',id:'zt25050'}];
+        const action = document.createElement('span');
+        action.textContent = `雷佳俊(zt20292)加签：${people.map(person => `${person.name}(${person.id})`).join('、')}`;
+        const time = document.createElement('span');
+        time.className = 'sign-action-time';
+        time.textContent = operationTime;
+        result.append(action,time);
+        existingPending.appendChild(result);
+      }
+    };
+    const addSignRecord = (operationTime, approvalTime = '', selectedSigners = []) => {
+      const timeline = document.querySelector('.timeline');
+      const record = document.createElement('article');
+      record.className = approvalTime ? 'record sign-added' : 'record sign-added pending';
+      record.innerHTML = '<span class="dot"></span><div class="record-head">HRBP负责人审批（加签）<span class="duration">⌛ 1分钟</span></div><div class="actor"><span class="actor-icon"></span><span class="actor-name"></span><span class="time"></span></div>';
+      const signers = selectedSigners.length ? selectedSigners : [{ name:'许大庆', id:'zt25050' }];
+      record.querySelector('.actor-icon').textContent = signers[0].name.charAt(0);
+      const names = record.querySelector('.actor-name');
+      signers.forEach((person,index) => {
+        if (index) names.appendChild(document.createElement('br'));
+        names.appendChild(document.createTextNode(person.name));
+        names.appendChild(document.createElement('br'));
+        names.appendChild(document.createTextNode(`(${person.id})`));
+      });
+      record.querySelector('.time').textContent = `◷ ${operationTime}${approvalTime ? `~${approvalTime}` : ''}`;
+      if (approvalTime) {
+        const result = document.createElement('div');
+        result.className = 'result';
+        result.textContent = '同意';
+        record.appendChild(result);
+      }
+      timeline.appendChild(record);
+      const pane = document.querySelector('.record-pane');
+      pane.scrollTop = pane.scrollHeight;
+    };
+    const addNextPendingRecord = arrivalTime => {
+      const record = document.createElement('article');
+      record.className = 'record pending';
+      record.innerHTML = '<span class="dot"></span><div class="record-head">HRBP负责人审批 <span class="duration">⌛ 1分钟</span></div><div class="actor"><span class="actor-icon">雷</span><span class="actor-name">雷佳俊<br>(zt20292)</span><span class="time"></span></div>';
+      record.querySelector('.time').textContent = `◷ ${arrivalTime}`;
+      document.querySelector('.timeline').appendChild(record);
+      const pane = document.querySelector('.record-pane');
+      pane.scrollTop = pane.scrollHeight;
+    };
+    document.getElementById('addSigner').addEventListener('click',showModal);
+    document.getElementById('closeModal').addEventListener('click',hideModal);
+    document.getElementById('cancelModal').addEventListener('click',hideModal);
+    personInput.addEventListener('input',renderResults);
+    personInput.addEventListener('keydown',event=>{ if(event.key==='Enter'){ event.preventDefault(); const first=results.querySelector('.person-option'); if(first) first.click(); } else if(event.key==='Escape') setResultsOpen(false); });
+    document.getElementById('personToggle').addEventListener('click',()=>{ if(results.classList.contains('show')) setResultsOpen(false); else { personInput.focus(); renderResults(); } });
+    document.getElementById('confirmAddSigner').addEventListener('click',()=>{ const type=document.querySelector('input[name="signType"]:checked'); const typeError=document.getElementById('typeError'),personError=document.getElementById('personError'); typeError.classList.toggle('show',!type); personError.classList.toggle('show',tags.length===0); if(!type || tags.length===0) return; hideModal(); lastSignTime=displayTime(); lastSignMode=type.value==='后加签'?'after':'before'; lastSigners=tags.map(({name,id})=>({name,id})); if(lastSignMode==='before'){ completeExistingPending(lastSignTime, true, lastSigners); addSignRecord(lastSignTime,'',lastSigners); } postSignButtons(); toast(`已发起${type.value}：${tags.map(person=>person.name).join('、')}`); });
+    document.getElementById('agree').addEventListener('click',()=>{
+      if (location.pathname.endsWith('/approval-detail-approved.html')) return;
+      const target = new URL('approval-detail-approved.html', location.href);
+      target.searchParams.set('signed',lastSignMode ? '1' : '0');
+      if (lastSignMode) target.searchParams.set('signMode',lastSignMode);
+      if (lastSignTime) target.searchParams.set('signTime',lastSignTime);
+      if (lastSigners.length) target.searchParams.set('signers',JSON.stringify(lastSigners));
+      target.searchParams.set('agreeTime',displayTime());
+      location.href = target.href;
+    });
+    const pageState = new URLSearchParams(location.search);
+    if (location.pathname.endsWith('/approval-detail-approved.html')) {
+      const agreeTime = pageState.get('agreeTime') || '2026/10/10 22:33';
+      const signed = pageState.get('signed') !== '0';
+      const signMode = pageState.get('signMode') || 'before';
+      const signTime = pageState.get('signTime') || '2026/10/10 22:12';
+      let signers = [];
+      try {
+        const parsed = JSON.parse(pageState.get('signers') || '[]');
+        if (Array.isArray(parsed)) signers = parsed.filter(person => person && typeof person.name === 'string' && typeof person.id === 'string');
+      } catch { /* 旧链接继续显示原示例人员 */ }
+      if (signed && signMode === 'after') {
+        const approverAgreeTime = pageState.get('approverAgreeTime') || agreeTime;
+        completeExistingPending(approverAgreeTime);
+        const result = document.createElement('div');
+        result.className = 'result';
+        result.textContent = '同意';
+        existingPending.appendChild(result);
+        addSignRecord(approverAgreeTime,pageState.has('approverAgreeTime') ? agreeTime : '',signers);
+      } else {
+        completeExistingPending(signed ? signTime : agreeTime, signed, signers);
+        if (signed) addSignRecord(signTime,agreeTime,signers);
+        addNextPendingRecord(agreeTime);
+      }
+      postSignButtons();
+    }
+    modal.addEventListener('click',event=>{ if(event.target===modal) hideModal(); });
+  </script>
+</body>
+</html>
+
