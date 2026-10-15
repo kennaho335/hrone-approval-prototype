@@ -42,8 +42,8 @@
     .section-toggle{width:100%;border:0;background:#fff;text-align:left;color:inherit}
     .section-toggle[aria-expanded="true"]{background:#f1f1f1;border-radius:8px}
     .section-toggle .chevron{width:12px}
-    .done-pages[hidden]{display:none}
-    .done-pages .nav-row{min-height:45px;padding-left:47px;font-size:14px}
+    .section-pages[hidden]{display:none}
+    .section-pages .nav-row{min-height:45px;padding-left:47px;font-size:14px}
     .side-footer{height:58px;flex:none;padding:17px 23px;border-top:1px solid #e1e5ec;font-size:16px}
     .list-pane{grid-column:3;grid-row:2;display:flex;flex-direction:column;min-width:0;min-height:0;background:#f7f8fb;border-right:1px solid #e1e5ed}
     .list-head{display:flex;align-items:center;justify-content:space-between;flex:none;height:59px;padding:0 15px;font-size:16px}
@@ -64,7 +64,7 @@
     .open-button{min-height:41px;padding:0 16px;color:#fff;background:#3973ff;border:0;border-radius:6px;font-size:17px;white-space:nowrap}
     .open-button:hover{background:#2661ed}
     @media(max-width:1500px){.app{grid-template-columns:175px 225px 340px minmax(0,1fr)}.tabs{gap:18px;padding:0 13px}.tab{font-size:15px}.top-tools{gap:12px;padding-right:14px;font-size:12px}.rail-item{font-size:13px}.nav-heading,.nav-row{font-size:14px}.nav-row.child{padding-left:42px}.nav-row.grandchild{margin-left:34px;padding-left:8px}}
-    @media(max-width:1100px){.app{grid-template-columns:132px 190px 300px minmax(278px,1fr)}.rail{padding:10px 6px 0}.global-search{padding:0 8px;font-size:11px}.rail-item{gap:5px;padding:0 6px;font-size:12px}.rail-icon{width:16px;font-size:15px}.tabs{gap:11px;padding:0 10px}.tab{font-size:13px}.top-tools{gap:8px;padding-right:7px;font-size:10px}.top-tools i{font-size:14px}.nav-heading,.nav-row{font-size:13px}.nav-row.child{padding-left:30px}.nav-row.grandchild{margin-left:22px;padding-left:8px;font-size:12px}.done-pages .nav-row{padding-left:34px;font-size:12px}.list-head{font-size:13px}.card-title{font-size:12px;line-height:19px}.card-bottom{font-size:10px}.empty-art{width:120px;height:113px}.empty-note,.open-button{font-size:13px}}
+    @media(max-width:1100px){.app{grid-template-columns:132px 190px 300px minmax(278px,1fr)}.rail{padding:10px 6px 0}.global-search{padding:0 8px;font-size:11px}.rail-item{gap:5px;padding:0 6px;font-size:12px}.rail-icon{width:16px;font-size:15px}.tabs{gap:11px;padding:0 10px}.tab{font-size:13px}.top-tools{gap:8px;padding-right:7px;font-size:10px}.top-tools i{font-size:14px}.nav-heading,.nav-row{font-size:13px}.nav-row.child{padding-left:30px}.nav-row.grandchild{margin-left:22px;padding-left:8px;font-size:12px}.section-pages .nav-row{padding-left:34px;font-size:12px}.list-head{font-size:13px}.card-title{font-size:12px;line-height:19px}.card-bottom{font-size:10px}.empty-art{width:120px;height:113px}.empty-note,.open-button{font-size:13px}}
   </style>
 </head>
 <body>
@@ -100,14 +100,22 @@
           <div class="nav-row grandchild current" aria-current="page">HRONE待办</div>
         </div>
         <button class="nav-row section section-toggle" id="doneToggle" type="button" aria-expanded="false" aria-controls="donePages"><span class="chevron">▸</span><span>☑</span>已办</button>
-        <div class="done-pages" id="donePages" hidden>
+        <div class="section-pages" id="donePages" hidden>
           <div class="nav-row">EHR 飞书待办</div>
           <div class="nav-row">法务系统审批</div>
           <div class="nav-row">OA审批</div>
           <div class="nav-row">HRONE待办</div>
         </div>
         <div class="nav-row section"><span>▸</span><span>▤</span>抄送我<span class="count">99+</span></div>
-        <div class="nav-row section"><span>▸</span><span>▣</span>已发起</div>
+        <button class="nav-row section section-toggle" id="startedToggle" type="button" aria-expanded="false" aria-controls="startedPages"><span class="chevron">▸</span><span>▣</span>已发起</button>
+        <div class="section-pages" id="startedPages" hidden>
+          <div class="nav-row">会议室申请</div>
+          <div class="nav-row">企业自建应用发布申请</div>
+          <div class="nav-row">服务台向用户推送消息...</div>
+          <div class="nav-row">EHR飞书待办</div>
+          <div class="nav-row">OA审批</div>
+          <div class="nav-row">HRPNE审批</div>
+        </div>
       </div>
       <div class="side-footer">☷ 收起导航</div>
     </nav>
@@ -138,14 +146,16 @@
     </div></section>
   </main>
   <script>
-    const doneToggle = document.getElementById('doneToggle');
-    const donePages = document.getElementById('donePages');
-    doneToggle.addEventListener('click', () => {
-      const expanded = doneToggle.getAttribute('aria-expanded') !== 'true';
-      doneToggle.setAttribute('aria-expanded', String(expanded));
-      donePages.hidden = !expanded;
-      doneToggle.querySelector('.chevron').textContent = expanded ? '▾' : '▸';
-    });
+    for (const [toggleId, pagesId] of [['doneToggle', 'donePages'], ['startedToggle', 'startedPages']]) {
+      const toggle = document.getElementById(toggleId);
+      const pages = document.getElementById(pagesId);
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(expanded));
+        pages.hidden = !expanded;
+        toggle.querySelector('.chevron').textContent = expanded ? '▾' : '▸';
+      });
+    }
     document.querySelectorAll('.task-card').forEach((card, index) => card.addEventListener('click', () => {
       document.querySelectorAll('.task-card').forEach(item => item.classList.toggle('selected', item === card));
       if (index !== 0) return;
