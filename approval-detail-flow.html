@@ -27,9 +27,11 @@
     .result.sign-action { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }.sign-action-time { flex:none; color:#788594; white-space:nowrap; }.title-actions .is-hidden { display:none; }
     .flow-steps { padding:20px 28px; }.flow-step { position:relative; margin:0 0 12px 9px; padding:0 0 12px 20px; border-left:1px dashed #8db7ff; color:#26364a; }.flow-step:last-child { margin-bottom:0; border-left-color:transparent; }.flow-step:before { content:""; position:absolute; top:3px; left:-5px; width:9px; height:9px; border-radius:50%; background:#1677ff; }
     #addSigner { display:none !important; }
+    .title-card { height:122px; }
+    .body-grid { top:184px; }
     .record.anomaly .record-head { min-height:18px; }
     .record.anomaly .anomaly-time { display:block; margin-top:12px; color:#9299a3; font-size:12px; text-align:right; }
-    .record.anomaly .anomaly-reason { margin-top:13px; padding:8px; border-radius:5px; color:#f04452; background:#f6f8fa; font-size:12px; line-height:18px; }
+    .title-copy .anomaly-reason { margin-top:5px; padding:3px 8px; border-radius:4px; color:#f04452; background:#f6f8fa; font-size:12px; line-height:18px; }
     @media (max-width:1280px) { .tools { gap:8px; }.search { width:150px; }.account { display:none; }.body-grid { grid-template-columns:minmax(0,1fr) 390px; }.title-card { padding:0 18px; }.title-line { font-size:19px; }.meta { gap:9px; }.title-actions button { padding:0 8px; } }
     @media (max-width:960px) { .sidebar { width:164px; }.workspace { left:164px; }.brand { width:105px; margin-left:18px; }.all,.search { display:none; }.tools { padding-right:12px; }.body-grid { grid-template-columns:minmax(560px,1fr) 330px; }.form-grid { gap:14px 10px; }.title-card { padding:0 14px; }.title-actions { gap:5px; } }
   </style>
@@ -107,7 +109,7 @@
     const anomalyReason = document.createElement('div');
     anomalyReason.className = 'anomaly-reason';
     anomalyReason.textContent = '异常：审批人为空，请联系系统管理员处理。';
-    existingPending.appendChild(anomalyReason);
+    document.querySelector('.title-copy').appendChild(anomalyReason);
     const completeExistingPending = (operationTime, isSignAction = false, keepPending = false, selectedSigners = []) => {
       if (!keepPending) existingPending.classList.remove('pending');
       pendingTime.textContent = `${pendingTime.textContent.split('~')[0]}~${operationTime}`;
