@@ -62,8 +62,8 @@
     .table-scroll { min-height:0; flex:1; overflow:auto; scrollbar-color:#e4e7ec transparent; scrollbar-width:thin; }
     .process-table { width:1560px; min-width:1560px; border-collapse:collapse; table-layout:fixed; color:#09101b; }
     .process-table col:nth-child(1) { width:80px; }.process-table col:nth-child(2) { width:150px; }.process-table col:nth-child(3) { width:180px; }.process-table col:nth-child(4) { width:100px; }.process-table col:nth-child(5) { width:140px; }.process-table col:nth-child(6) { width:140px; }.process-table col:nth-child(7) { width:90px; }.process-table col:nth-child(8) { width:90px; }.process-table col:nth-child(9) { width:170px; }.process-table col:nth-child(10) { width:310px; }.process-table col:nth-child(11) { width:110px; }
-    #abnormalTable { width:1860px; min-width:1860px; }
-    #abnormalTable col:nth-child(1) { width:70px; }#abnormalTable col:nth-child(2) { width:210px; }#abnormalTable col:nth-child(3) { width:190px; }#abnormalTable col:nth-child(4) { width:95px; }#abnormalTable col:nth-child(5) { width:130px; }#abnormalTable col:nth-child(6) { width:90px; }#abnormalTable col:nth-child(7) { width:280px; }#abnormalTable col:nth-child(8) { width:150px; }#abnormalTable col:nth-child(9) { width:75px; }#abnormalTable col:nth-child(10) { width:140px; }#abnormalTable col:nth-child(11) { width:150px; }#abnormalTable col:nth-child(12) { width:190px; }#abnormalTable col:nth-child(13) { width:90px; }
+    #abnormalTable { width:1890px; min-width:1890px; }
+    #abnormalTable col:nth-child(1) { width:70px; }#abnormalTable col:nth-child(2) { width:210px; }#abnormalTable col:nth-child(3) { width:190px; }#abnormalTable col:nth-child(4) { width:95px; }#abnormalTable col:nth-child(5) { width:130px; }#abnormalTable col:nth-child(6) { width:90px; }#abnormalTable col:nth-child(7) { width:280px; }#abnormalTable col:nth-child(8) { width:150px; }#abnormalTable col:nth-child(9) { width:75px; }#abnormalTable col:nth-child(10) { width:140px; }#abnormalTable col:nth-child(11) { width:150px; }#abnormalTable col:nth-child(12) { width:190px; }#abnormalTable col:nth-child(13) { width:120px; }
     th { position:sticky; top:0; z-index:1; height:35px; padding:0 18px 0 8px; border-right:1px solid #edf0f4; background:#fafafa; text-align:left; font-weight:700; white-space:normal; overflow-wrap:anywhere; }
     th:last-child { border-right:0; }
     .column-resize { position:absolute; top:0; right:0; bottom:0; width:14px; display:flex; align-items:center; justify-content:center; color:#aab7c9; cursor:col-resize; touch-action:none; user-select:none; font-size:14px; font-weight:400; }
@@ -93,6 +93,9 @@
     .action { flex:0 0 26px; width:26px; height:26px; display:grid; place-items:center; border:0; border-radius:6px; color:#1769ff; background:#f5f7fd; font-size:15px; line-height:1; white-space:nowrap; overflow-wrap:normal; }
     .action.more { color:#34445b; font-weight:700; }
     .action svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.4; }
+    .row-more-menu { position:fixed; z-index:8; width:112px; padding:4px 0; border:1px solid #e7e9ee; border-radius:6px; background:#fff; box-shadow:0 7px 20px #13243d24; }
+    .row-more-menu button { width:100%; height:29px; display:block; padding:0 12px; border:0; color:#303b4b; background:#fff; text-align:left; white-space:nowrap; }
+    .row-more-menu button:hover,.row-more-menu button:focus-visible { outline:none; background:#f2f3f5; }
     .empty { height:80px; text-align:center; color:#8c98aa; }
     .toast { position:fixed; z-index:9; right:23px; bottom:18px; display:none; padding:9px 13px; border-radius:5px; color:#fff; background:#33435a; box-shadow:0 3px 10px #0002; }
     .toast.show { display:block; }
@@ -168,7 +171,6 @@
           <div class="field"><label for="approvalNo">审批编号</label><input id="approvalNo" type="text" placeholder="请输入"></div>
           <div class="field"><label for="flowType">流程类型</label><select id="flowType" required><option value="" selected>请选择</option><option>考勤</option><option>人事</option><option>招聘需求流程</option><option>offer流程</option></select></div>
           <div class="field"><label for="status">审批状态</label><select id="status" required><option value="" selected>请选择</option><option>审批中</option><option>已作废</option><option>已撤回</option><option>通过</option></select></div>
-          <div class="field"><label for="anomalyType">异常类型</label><select id="anomalyType" required><option value="" selected>请选择</option><option>参与人为空</option><option>系统异常</option><option>分支异常</option><option>节点超时</option><option>流程卡住</option><option>数据不一致</option><option>流程实例</option></select></div>
           <div class="field"><label for="workflowState">流程状态</label><select id="workflowState" required><option value="" selected>请选择</option><option>正常</option><option>异常</option></select></div>
         </div>
         <div class="filter-actions"><button class="reset" id="reset" type="button">⟲ 重置</button><button class="search-button" type="submit">⌕ 查询</button></div>
@@ -197,6 +199,7 @@
     </section>
   </main>
   <div class="toast" id="toast" role="status"></div>
+  <div class="row-more-menu" id="abnormalMoreMenu" role="menu" aria-label="更多操作" hidden><button type="button" role="menuitem" data-more-action="void">作废</button><button type="button" role="menuitem" data-more-action="version">查看流程版本</button><button type="button" role="menuitem" data-more-action="diagram">查看流程图</button></div>
   <div class="intervention-overlay" id="interventionOverlay" hidden>
     <section class="intervention-dialog" role="dialog" aria-modal="true" aria-labelledby="interventionTitle">
       <div class="intervention-head"><span id="interventionTitle">节点干预</span><button class="intervention-close" type="button" data-close-intervention aria-label="关闭">×</button></div>
@@ -235,20 +238,22 @@
     const rows = document.getElementById('rows');
     document.querySelectorAll('.process-table').forEach(table=>{
     const columns = [...table.querySelectorAll('colgroup col')];
-    const columnWidthsKey = table.id==='abnormalTable'?'hrone-abnormal-processes-column-widths-v1':'hrone-all-processes-column-widths-v3';
+    const columnWidthsKey = table.id==='abnormalTable'?'hrone-abnormal-processes-column-widths-v2':'hrone-all-processes-column-widths-v3';
     const saveColumnWidths = () => {
       try { localStorage.setItem(columnWidthsKey,JSON.stringify(columns.map(column=>Math.round(column.getBoundingClientRect().width)))); } catch {}
     };
     try {
       const currentWidths=JSON.parse(localStorage.getItem(columnWidthsKey));
+      const abnormalV1Widths=table.id==='abnormalTable'?JSON.parse(localStorage.getItem('hrone-abnormal-processes-column-widths-v1')):null;
       const v2Widths=table.id==='abnormalTable'?null:JSON.parse(localStorage.getItem('hrone-all-processes-column-widths-v2'));
       const v1Widths=table.id==='abnormalTable'?null:JSON.parse(localStorage.getItem('hrone-all-processes-column-widths-v1'));
       const previousWidths=Array.isArray(v2Widths)&&v2Widths.length===13?v2Widths:
         Array.isArray(v1Widths)&&v1Widths.length===15?[v1Widths[0],v1Widths[1],v1Widths[2],v1Widths[4],150,...v1Widths.slice(7)]:null;
       const migratedWidths=Array.isArray(previousWidths)?previousWidths.filter((_,index)=>index!==3&&index!==4):null;
-      const savedWidths=Array.isArray(currentWidths)&&currentWidths.length===columns.length?currentWidths:migratedWidths;
+      const savedWidths=Array.isArray(currentWidths)&&currentWidths.length===columns.length?currentWidths:
+        Array.isArray(abnormalV1Widths)&&abnormalV1Widths.length===columns.length?abnormalV1Widths:migratedWidths;
       if(Array.isArray(savedWidths)&&savedWidths.length===columns.length&&savedWidths.every(width=>Number.isFinite(width)&&width>=40)) {
-        savedWidths[columns.length-1]=Math.max(100,savedWidths[columns.length-1]);
+        savedWidths[columns.length-1]=Math.max(table.id==='abnormalTable'?120:100,savedWidths[columns.length-1]);
         savedWidths.forEach((width,index)=>{ columns[index].style.width=`${width}px`; });
         table.style.width=`${savedWidths.reduce((sum,width)=>sum+width,0)}px`;
         table.style.minWidth=table.style.width;
@@ -262,7 +267,7 @@
       handle.setAttribute('role','separator');
       handle.setAttribute('aria-orientation','vertical');
       handle.setAttribute('aria-label',`${header.textContent}列宽`);
-      const minWidth=index===columns.length-1?100:40;
+      const minWidth=index===columns.length-1?(table.id==='abnormalTable'?120:100):40;
       handle.setAttribute('aria-valuemin',String(minWidth));
       handle.tabIndex=0;
       header.appendChild(handle);
@@ -335,11 +340,33 @@
       list.forEach((item,index)=>{
         const [name,no,node,time,created,id]=item;
         const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${index+1}</td><td><button class="flow-name-link" type="button" data-open-flow-detail>${name}</button></td><td><span class="blue-link">${no}</span>${copyButton(no)}</td><td><span class="workflow-state abnormal">异常</span></td><td>${node}</td><td>分支异常</td><td class="anomaly-details">${abnormalMessage}</td><td>${time}</td><td>人事</td><td class="person-cell">雷佳俊(zt20292)</td><td>${created}</td><td><span class="blue-link">${id}</span></td><td>${iconAction('节点干预',flow,'node-intervene')}</td>`;
+        tr.innerHTML=`<td>${index+1}</td><td><button class="flow-name-link" type="button" data-open-flow-detail>${name}</button></td><td><span class="blue-link">${no}</span>${copyButton(no)}</td><td><span class="workflow-state abnormal">异常</span></td><td>${node}</td><td>分支异常</td><td class="anomaly-details">${abnormalMessage}</td><td>${time}</td><td>人事</td><td class="person-cell">雷佳俊(zt20292)</td><td>${created}</td><td><span class="blue-link">${id}</span></td><td><div class="actions">${iconAction('节点干预',flow,'node-intervene')}${iconAction('去处理','⌕','go-process')}${iconAction('更多','···','more abnormal-more')}</div></td>`;
         abnormalRows.appendChild(tr);
       });
     };
+    const abnormalMoreMenu=document.getElementById('abnormalMoreMenu');
+    let abnormalMoreTrigger=null;
+    const closeAbnormalMore=restoreFocus=>{
+      abnormalMoreMenu.hidden=true;
+      abnormalMoreTrigger?.setAttribute('aria-expanded','false');
+      if(restoreFocus)abnormalMoreTrigger?.focus();
+      abnormalMoreTrigger=null;
+    };
+    const openAbnormalMore=button=>{
+      if(abnormalMoreTrigger===button&&!abnormalMoreMenu.hidden){closeAbnormalMore(false);return;}
+      closeAbnormalMore(false);
+      abnormalMoreTrigger=button;
+      button.setAttribute('aria-expanded','true');
+      abnormalMoreMenu.hidden=false;
+      const rect=button.getBoundingClientRect();
+      const menuWidth=abnormalMoreMenu.offsetWidth;
+      const menuHeight=abnormalMoreMenu.offsetHeight;
+      abnormalMoreMenu.style.left=`${Math.max(8,Math.min(rect.right-menuWidth,window.innerWidth-menuWidth-8))}px`;
+      abnormalMoreMenu.style.top=`${rect.bottom+menuHeight+4>window.innerHeight?Math.max(8,rect.top-menuHeight-4):rect.bottom+4}px`;
+      abnormalMoreMenu.querySelector('button')?.focus();
+    };
     const setView=view=>{
+      closeAbnormalMore(false);
       const abnormal=view==='abnormal';
       document.getElementById('allQuery').hidden=abnormal;
       document.getElementById('allList').hidden=abnormal;
@@ -496,9 +523,8 @@
       const no=document.getElementById('approvalNo').value.trim().toLowerCase();
       const type=document.getElementById('flowType').value;
       const status=document.getElementById('status').value;
-      const anomalyType=document.getElementById('anomalyType').value;
       const workflowState=document.getElementById('workflowState').value;
-      render(data.filter(item=>(!name||item[0].toLowerCase().includes(name))&&(!no||item[1].toLowerCase().includes(no))&&(!type||item[2]===type)&&(!status||item[5]===status)&&(!anomalyType||anomalies[item[1]]?.type===anomalyType)&&(!workflowState||(anomalies[item[1]]?'异常':'正常')===workflowState)));
+      render(data.filter(item=>(!name||item[0].toLowerCase().includes(name))&&(!no||item[1].toLowerCase().includes(no))&&(!type||item[2]===type)&&(!status||item[5]===status)&&(!workflowState||(anomalies[item[1]]?'异常':'正常')===workflowState)));
     });
     document.getElementById('reset').addEventListener('click',()=>{ document.getElementById('searchForm').reset(); render(data); });
     document.getElementById('abnormalSearchForm').addEventListener('submit',event=>{
@@ -512,11 +538,13 @@
     });
     document.getElementById('abnormalReset').addEventListener('click',()=>{ document.getElementById('abnormalSearchForm').reset(); renderAbnormal(abnormalItems); });
     const handleRowClick=async event=>{
-      if(event.target.closest('[data-open-flow-detail]')) {
+      if(event.target.closest('[data-open-flow-detail], .go-process')) {
         if(window.parent===window) location.href='approval-detail-flow.html';
         else window.parent.postMessage({type:'hrone-open-flow-approval-detail'},'*');
         return;
       }
+      const moreButton=event.target.closest('.abnormal-more');
+      if(moreButton){openAbnormalMore(moreButton);return;}
       const interventionButton=event.target.closest('.node-intervene');
       if(interventionButton) { openIntervention(interventionButton); return; }
       const button=event.target.closest('[data-copy]');
@@ -525,6 +553,20 @@
     };
     rows.addEventListener('click',handleRowClick);
     abnormalRows.addEventListener('click',handleRowClick);
+    abnormalMoreMenu.addEventListener('click',event=>{
+      const item=event.target.closest('[data-more-action]');
+      if(!item)return;
+      const action=item.textContent.trim();
+      closeAbnormalMore(true);
+      showToast(`原型演示，${action}操作暂未展开`);
+    });
+    document.addEventListener('click',event=>{
+      if(!abnormalMoreMenu.hidden&&!event.target.closest('#abnormalMoreMenu, .abnormal-more'))closeAbnormalMore(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'&&!abnormalMoreMenu.hidden){event.preventDefault();closeAbnormalMore(true);}
+    });
+    document.querySelector('#abnormalList .table-scroll').addEventListener('scroll',()=>closeAbnormalMore(false));
     render(data);
     renderAbnormal(abnormalItems);
   </script>
