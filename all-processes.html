@@ -35,9 +35,11 @@
     .side-bottom { position:absolute; right:0; bottom:0; left:0; height:32px; border-top:1px solid #edf0f3; color:#4286f8; text-align:right; padding:7px 17px; }
     .workspace { position:absolute; top:52px; right:0; bottom:0; left:220px; min-width:0; display:flex; flex-direction:column; }
     .tabs { flex:0 0 41px; display:flex; align-items:stretch; margin:0 10px; border-radius:9px; background:#fafbfe; }
-    .tab { min-width:56px; display:grid; place-items:center; padding:0 16px; color:#293b55; font-size:12px; }
+    .tab { min-width:56px; display:grid; place-items:center; padding:0 16px; border:0; color:#293b55; background:transparent; font-size:12px; }
     .tab.active { border-bottom:2px solid var(--blue); color:var(--blue); font-weight:600; }
     .tabs .collapse { align-self:center; margin-left:auto; padding:0 8px; color:#2180ff; font-size:17px; }
+    .tab[role="tab"]:focus-visible { outline:2px solid var(--blue); outline-offset:-3px; }
+    [hidden] { display:none !important; }
     .query-card { flex:0 0 auto; margin:10px 10px 0; border-radius:8px; background:#fff; overflow:hidden; }
     .section-title { height:38px; display:flex; align-items:center; gap:5px; padding:0 13px; border-bottom:1px solid var(--line); color:#121d31; font-weight:700; }
     .section-title svg { width:13px; height:13px; }
@@ -57,6 +59,8 @@
     .table-scroll { min-height:0; flex:1; overflow:auto; scrollbar-color:#e4e7ec transparent; scrollbar-width:thin; }
     .process-table { width:1820px; min-width:1820px; border-collapse:collapse; table-layout:fixed; color:#09101b; }
     .process-table col:nth-child(1) { width:80px; }.process-table col:nth-child(2) { width:150px; }.process-table col:nth-child(3) { width:180px; }.process-table col:nth-child(4) { width:110px; }.process-table col:nth-child(5) { width:150px; }.process-table col:nth-child(6) { width:100px; }.process-table col:nth-child(7) { width:140px; }.process-table col:nth-child(8) { width:140px; }.process-table col:nth-child(9) { width:90px; }.process-table col:nth-child(10) { width:90px; }.process-table col:nth-child(11) { width:170px; }.process-table col:nth-child(12) { width:310px; }.process-table col:nth-child(13) { width:110px; }
+    #abnormalTable { width:1860px; min-width:1860px; }
+    #abnormalTable col:nth-child(1) { width:70px; }#abnormalTable col:nth-child(2) { width:210px; }#abnormalTable col:nth-child(3) { width:190px; }#abnormalTable col:nth-child(4) { width:95px; }#abnormalTable col:nth-child(5) { width:130px; }#abnormalTable col:nth-child(6) { width:90px; }#abnormalTable col:nth-child(7) { width:280px; }#abnormalTable col:nth-child(8) { width:150px; }#abnormalTable col:nth-child(9) { width:75px; }#abnormalTable col:nth-child(10) { width:140px; }#abnormalTable col:nth-child(11) { width:150px; }#abnormalTable col:nth-child(12) { width:190px; }#abnormalTable col:nth-child(13) { width:90px; }
     th { position:sticky; top:0; z-index:1; height:35px; padding:0 18px 0 8px; border-right:1px solid #edf0f4; background:#fafafa; text-align:left; font-weight:700; white-space:normal; overflow-wrap:anywhere; }
     th:last-child { border-right:0; }
     .column-resize { position:absolute; top:0; right:0; bottom:0; width:14px; display:flex; align-items:center; justify-content:center; color:#aab7c9; cursor:col-resize; touch-action:none; user-select:none; font-size:14px; font-weight:400; }
@@ -151,8 +155,8 @@
     <div class="side-bottom">◂|</div>
   </aside>
   <main class="workspace">
-    <nav class="tabs" aria-label="页面标签"><span class="tab">首页</span><span class="tab active">全部流程</span><span class="collapse">⌄</span></nav>
-    <section class="query-card" aria-labelledby="query-title">
+    <nav class="tabs" aria-label="页面标签"><span class="tab">首页</span><button class="tab active" id="allTab" type="button" role="tab" aria-selected="true" aria-controls="allQuery">全部流程</button><button class="tab" id="abnormalTab" type="button" role="tab" aria-selected="false" aria-controls="abnormalQuery">异常流程</button><span class="collapse">⌄</span></nav>
+    <section class="query-card" id="allQuery" aria-labelledby="query-title">
       <div class="section-title" id="query-title"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12l-4.6 5.4v3.8l-2.8 1.4V8.4Z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>查询条件</div>
       <form id="searchForm" novalidate>
         <div class="filters">
@@ -166,9 +170,26 @@
         <div class="filter-actions"><button class="reset" id="reset" type="button">⟲ 重置</button><button class="search-button" type="submit">⌕ 查询</button></div>
       </form>
     </section>
-    <section class="table-card" aria-label="全部流程列表">
+    <section class="table-card" id="allList" aria-label="全部流程列表">
       <div class="table-toolbar"><button class="settings" type="button" aria-label="列表设置" title="列表设置">⚙</button></div>
       <div class="table-scroll"><table class="process-table"><colgroup><col><col><col><col><col><col><col><col><col><col><col><col><col></colgroup><thead><tr><th>序号</th><th>流程名称</th><th>审批编号</th><th>异常类型</th><th>异常详情</th><th>流程类型</th><th>流程发起人</th><th>当前处理人</th><th>流程状态</th><th>审批状态</th><th>流程创建时间</th><th>流程实例ID</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </section>
+    <section class="query-card" id="abnormalQuery" aria-labelledby="abnormal-query-title" hidden>
+      <div class="section-title" id="abnormal-query-title"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12l-4.6 5.4v3.8l-2.8 1.4V8.4Z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>查询条件</div>
+      <form id="abnormalSearchForm" novalidate>
+        <div class="filters">
+          <div class="field"><label for="abnormalFlowName">流程名称</label><input id="abnormalFlowName" type="text" placeholder="请输入"></div>
+          <div class="field"><label for="abnormalApprovalNo">审批编号</label><input id="abnormalApprovalNo" type="text" placeholder="请输入"></div>
+          <div class="field"><label for="abnormalFlowType">流程类型</label><select id="abnormalFlowType" required><option value="" selected>请选择</option><option>人事</option></select></div>
+          <div class="field"><label for="abnormalType">异常类型</label><select id="abnormalType" required><option value="" selected>请选择</option><option>分支异常</option></select></div>
+          <div class="field"><label for="abnormalWorkflowState">流程状态</label><select id="abnormalWorkflowState" required><option value="" selected>请选择</option><option>正常</option><option>异常</option></select></div>
+        </div>
+        <div class="filter-actions"><button class="reset" id="abnormalReset" type="button">⟲ 重置</button><button class="search-button" type="submit">⌕ 查询</button></div>
+      </form>
+    </section>
+    <section class="table-card" id="abnormalList" aria-label="异常流程列表" hidden>
+      <div class="table-toolbar"><button class="settings" type="button" aria-label="列表设置" title="列表设置">⚙</button></div>
+      <div class="table-scroll"><table class="process-table" id="abnormalTable"><colgroup><col><col><col><col><col><col><col><col><col><col><col><col><col></colgroup><thead><tr><th>序号</th><th>流程名称</th><th>审批编号</th><th>流程状态</th><th>异常节点</th><th>异常类型</th><th>异常信息</th><th>异常发生时间</th><th>流程类型</th><th>流程发起人</th><th>流程创建时间</th><th>流程实例ID</th><th>操作</th></tr></thead><tbody id="abnormalRows"></tbody></table></div>
     </section>
   </main>
   <div class="toast" id="toast" role="status"></div>
@@ -208,15 +229,15 @@
       P202610091745400040: { node:'部门负责人直接上级', type:'参与人为空', message:'【空审批人】审批人为空，节点名称：部门负责人直接上级，节点 ID：flow_350226891619', time:'2026/10/12 15:45:50' }
     };
     const rows = document.getElementById('rows');
-    const table = document.querySelector('.process-table');
+    document.querySelectorAll('.process-table').forEach(table=>{
     const columns = [...table.querySelectorAll('colgroup col')];
-    const columnWidthsKey = 'hrone-all-processes-column-widths-v2';
+    const columnWidthsKey = table.id==='abnormalTable'?'hrone-abnormal-processes-column-widths-v1':'hrone-all-processes-column-widths-v2';
     const saveColumnWidths = () => {
       try { localStorage.setItem(columnWidthsKey,JSON.stringify(columns.map(column=>Math.round(column.getBoundingClientRect().width)))); } catch {}
     };
     try {
       const currentWidths=JSON.parse(localStorage.getItem(columnWidthsKey));
-      const oldWidths=JSON.parse(localStorage.getItem('hrone-all-processes-column-widths-v1'));
+      const oldWidths=table.id==='abnormalTable'?null:JSON.parse(localStorage.getItem('hrone-all-processes-column-widths-v1'));
       const migratedWidths=Array.isArray(oldWidths)&&oldWidths.length===15
         ? [oldWidths[0],oldWidths[1],oldWidths[2],oldWidths[4],150,...oldWidths.slice(7)]
         : null;
@@ -275,6 +296,7 @@
         saveColumnWidths();
       });
     });
+    });
     const bell = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.4 11.9h9.2c-1.1-1.1-1.5-2-1.5-4.9a3.1 3.1 0 0 0-6.2 0c0 2.9-.4 3.8-1.5 4.9Z"/><path d="M6.2 13.1c.3 1.1 2.5 1.1 2.8 0"/></svg>';
     const flow = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="4" cy="8" r="2"/><circle cx="12" cy="8" r="2"/><path d="M6.2 8h3.6M8.4 5.8l2.2 2.2-2.2 2.2"/></svg>';
     const iconAction = (name,icon,extra='') => `<button type="button" class="action ${extra}" aria-label="${name}" title="${name}">${icon}</button>`;
@@ -292,6 +314,39 @@
         rows.appendChild(tr);
       });
     };
+    const abnormalItems = [
+      ['移动端离职10的离职申请','P202610131454430015','离职待办-财务节点填写','2026/10/13 15:10:33','2026/10/13 14:54:43','f810acb5-c6d2-11f1-b905-fefcf…'],
+      ['移动端离职10的离职申请','P202610131454430015','离职待办-财务节点填写','2026/10/13 15:10:23','2026/10/13 14:54:43','f810acb5-c6d2-11f1-b905-fefcf…'],
+      ['移动端离职10的离职申请','P202610131454430015','离职待办-财务节点填写','2026/10/13 15:10:08','2026/10/13 14:54:43','f810acb5-c6d2-11f1-b905-fefcf…'],
+      ['移动端离职4的离职申请','P202610101828220030','HSSC_薪酬主管','2026/10/10 19:15:16','2026/10/10 18:28:22','51d2653a-c495-11f1-a07d-fefcf…'],
+      ['移动端离职4的离职申请','P202610101828220030','HSSC_薪酬主管','2026/10/10 19:15:10','2026/10/10 18:28:22','51d2653a-c495-11f1-a07d-fefcf…'],
+      ['移动端离职4的离职申请','P202610101828220030','HSSC_薪酬主管','2026/10/10 19:12:55','2026/10/10 18:28:22','51d2653a-c495-11f1-a07d-fefcf…'],
+      ['移动端离职4的离职申请','P202610101828220030','HSSC_薪酬主管','2026/10/10 19:12:51','2026/10/10 18:28:22','51d2653a-c495-11f1-a07d-fefcf…']
+    ];
+    const abnormalMessage="任务审批失败：Unknown property used in expression: ${!(hasUnpaidComputerSubsidy == '1')}";
+    const abnormalRows=document.getElementById('abnormalRows');
+    const renderAbnormal=list=>{
+      abnormalRows.replaceChildren();
+      if(!list.length){const tr=document.createElement('tr');tr.innerHTML='<td class="empty" colspan="13">暂无数据</td>';abnormalRows.appendChild(tr);return;}
+      list.forEach((item,index)=>{
+        const [name,no,node,time,created,id]=item;
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${index+1}</td><td><button class="flow-name-link" type="button" data-open-flow-detail>${name}</button></td><td><span class="blue-link">${no}</span>${copyButton(no)}</td><td><span class="workflow-state abnormal">异常</span></td><td>${node}</td><td>分支异常</td><td class="anomaly-details">${abnormalMessage}</td><td>${time}</td><td>人事</td><td class="person-cell">雷佳俊(zt20292)</td><td>${created}</td><td><span class="blue-link">${id}</span></td><td><button class="action" type="button" data-open-flow-detail aria-label="查看详情" title="查看详情">⌕</button></td>`;
+        abnormalRows.appendChild(tr);
+      });
+    };
+    const setView=view=>{
+      const abnormal=view==='abnormal';
+      document.getElementById('allQuery').hidden=abnormal;
+      document.getElementById('allList').hidden=abnormal;
+      document.getElementById('abnormalQuery').hidden=!abnormal;
+      document.getElementById('abnormalList').hidden=!abnormal;
+      for(const [id,active] of [['allTab',!abnormal],['abnormalTab',abnormal]]){
+        const tab=document.getElementById(id);tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));
+      }
+    };
+    document.getElementById('allTab').addEventListener('click',()=>setView('all'));
+    document.getElementById('abnormalTab').addEventListener('click',()=>setView('abnormal'));
     const showToast = message => { const toast=document.getElementById('toast'); toast.textContent=message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>toast.classList.remove('show'),1800); };
     const interventionOverlay=document.getElementById('interventionOverlay');
     const interventionTo=document.getElementById('interventionTo');
@@ -442,7 +497,17 @@
       render(data.filter(item=>(!name||item[0].toLowerCase().includes(name))&&(!no||item[1].toLowerCase().includes(no))&&(!type||item[2]===type)&&(!status||item[5]===status)&&(!anomalyType||anomalies[item[1]]?.type===anomalyType)&&(!workflowState||(anomalies[item[1]]?'异常':'正常')===workflowState)));
     });
     document.getElementById('reset').addEventListener('click',()=>{ document.getElementById('searchForm').reset(); render(data); });
-    rows.addEventListener('click',async event=>{
+    document.getElementById('abnormalSearchForm').addEventListener('submit',event=>{
+      event.preventDefault();
+      const name=document.getElementById('abnormalFlowName').value.trim().toLowerCase();
+      const no=document.getElementById('abnormalApprovalNo').value.trim().toLowerCase();
+      const type=document.getElementById('abnormalFlowType').value;
+      const anomalyType=document.getElementById('abnormalType').value;
+      const workflowState=document.getElementById('abnormalWorkflowState').value;
+      renderAbnormal(abnormalItems.filter(item=>(!name||item[0].toLowerCase().includes(name))&&(!no||item[1].toLowerCase().includes(no))&&(!type||type==='人事')&&(!anomalyType||anomalyType==='分支异常')&&(!workflowState||workflowState==='异常')));
+    });
+    document.getElementById('abnormalReset').addEventListener('click',()=>{ document.getElementById('abnormalSearchForm').reset(); renderAbnormal(abnormalItems); });
+    const handleRowClick=async event=>{
       if(event.target.closest('[data-open-flow-detail]')) {
         if(window.parent===window) location.href='approval-detail-flow.html';
         else window.parent.postMessage({type:'hrone-open-flow-approval-detail'},'*');
@@ -453,8 +518,11 @@
       const button=event.target.closest('[data-copy]');
       if(!button)return;
       try { await navigator.clipboard.writeText(button.dataset.copy); showToast('已复制'); } catch { showToast('复制失败'); }
-    });
+    };
+    rows.addEventListener('click',handleRowClick);
+    abnormalRows.addEventListener('click',handleRowClick);
     render(data);
+    renderAbnormal(abnormalItems);
   </script>
 </body>
 </html>

@@ -31,7 +31,8 @@
     .body-grid { top:184px; }
     .record.anomaly .record-head { min-height:18px; }
     .record.anomaly .anomaly-time { display:block; margin-top:12px; color:#9299a3; font-size:12px; text-align:right; }
-    .title-copy .anomaly-reason { margin-top:5px; padding:3px 8px; border-radius:4px; color:#f04452; background:#f6f8fa; font-size:12px; line-height:18px; }
+    .title-copy .anomaly-reason { display:flex; align-items:center; gap:14px; margin-top:5px; color:#f04452; font-size:14px; line-height:20px; white-space:nowrap; }
+    .title-copy .anomaly-reason .anomaly-header-time { color:#8c98aa; }
     @media (max-width:1280px) { .tools { gap:8px; }.search { width:150px; }.account { display:none; }.body-grid { grid-template-columns:minmax(0,1fr) 390px; }.title-card { padding:0 18px; }.title-line { font-size:19px; }.meta { gap:9px; }.title-actions button { padding:0 8px; } }
     @media (max-width:960px) { .sidebar { width:164px; }.workspace { left:164px; }.brand { width:105px; margin-left:18px; }.all,.search { display:none; }.tools { padding-right:12px; }.body-grid { grid-template-columns:minmax(560px,1fr) 330px; }.form-grid { gap:14px 10px; }.title-card { padding:0 14px; }.title-actions { gap:5px; } }
   </style>
@@ -108,7 +109,12 @@
     existingPending.appendChild(pendingTime);
     const anomalyReason = document.createElement('div');
     anomalyReason.className = 'anomaly-reason';
-    anomalyReason.textContent = '异常：审批人为空，请联系系统管理员处理。';
+    const anomalyMessage = document.createElement('span');
+    anomalyMessage.textContent = '异常：审批人为空，请联系系统管理员处理。';
+    const anomalyHeaderTime = document.createElement('span');
+    anomalyHeaderTime.className = 'anomaly-header-time';
+    anomalyHeaderTime.textContent = '◷ 2026/10/12 15:41';
+    anomalyReason.append(anomalyMessage, anomalyHeaderTime);
     document.querySelector('.title-copy').appendChild(anomalyReason);
     const completeExistingPending = (operationTime, isSignAction = false, keepPending = false, selectedSigners = []) => {
       if (!keepPending) existingPending.classList.remove('pending');

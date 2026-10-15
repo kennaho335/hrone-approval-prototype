@@ -74,8 +74,8 @@
     document.querySelectorAll('.group-toggle').forEach(button => button.addEventListener('click',()=>setGroupExpanded(button,button.getAttribute('aria-expanded') !== 'true')));
     const links = [...document.querySelectorAll('.page-link')];
     const pages = {
-      allProcesses:'all-processes.html',
-      flowApprovalDetail:'approval-detail-flow.html?v=20261015-anomaly-header',
+      allProcesses:'all-processes.html?v=20261015-abnormal-tab',
+      flowApprovalDetail:'approval-detail-flow.html?v=20261015-anomaly-time',
       void:'void.html',
       feishuTodo:'feishu-hrone-todo.html',
       feishuTodoDetail:'feishu-todo-approval-detail.html',
