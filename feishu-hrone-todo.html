@@ -51,16 +51,16 @@
     .list-head{display:flex;align-items:center;justify-content:space-between;flex:none;height:59px;padding:0 15px;font-size:16px}
     .list-head span:last-child{color:#758194;font-size:20px}
     .cards{flex:1;min-height:0;overflow:auto;padding:0 10px 10px;scrollbar-width:thin;scrollbar-color:#d9dee7 transparent}
-    .cards[hidden],.list-empty[hidden]{display:none}
-    .list-empty{display:flex;flex:1;align-items:center;justify-content:center;color:#8b98aa;font-size:14px}
-    .task-card{display:block;width:100%;min-height:95px;margin:0 0 10px;padding:13px 15px;text-align:left;color:#495568;background:#fff;border:1px solid #dadee5;border-radius:10px}
+    .cards[hidden]{display:none}
+    .task-card{display:block;width:100%;min-height:112px;margin:0 0 10px;padding:13px 15px;text-align:left;color:#26374d;background:#fff;border:1px solid #dadee5;border-radius:10px}
     .task-card.selected{border-color:#3973ff;box-shadow:0 0 0 1px #3973ff inset}
-    .task-card:hover{border-color:#8eacff}
-    .card-title{min-height:43px;line-height:21px;color:#26374d;font-size:14px}
-    .card-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;font-size:12px}
-    .originator{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#68788f}
-    .due{margin-left:auto;color:#f87900;white-space:nowrap}
-    .due.muted{color:#71809a}
+    button.task-card:hover{border-color:#8eacff}
+    .card-top,.card-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .card-top{font-size:12px;line-height:18px}
+    .card-title{margin:10px 0;line-height:20px;color:#26374d;font-size:14px;font-weight:600}
+    .card-bottom{font-size:12px;line-height:18px}
+    .originator{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .card-time{margin-left:auto;white-space:nowrap}
     .detail-wrap{grid-column:4;grid-row:2;min-width:0;min-height:0;padding:10px 16px 9px 0}
     .detail{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;background:#fff;border:1px solid #dfe4eb;border-radius:8px}
     .empty-art{display:block;width:160px;height:150px;margin-bottom:5px}
@@ -68,7 +68,7 @@
     .open-button{min-height:41px;padding:0 16px;color:#fff;background:#3973ff;border:0;border-radius:6px;font-size:17px;white-space:nowrap}
     .open-button:hover{background:#2661ed}
     @media(max-width:1500px){.app{grid-template-columns:175px 225px 340px minmax(0,1fr)}.tabs{gap:18px;padding:0 13px}.tab{font-size:15px}.top-tools{gap:12px;padding-right:14px;font-size:12px}.rail-item{font-size:13px}.nav-heading,.nav-row{font-size:14px}.nav-row.child{padding-left:42px}.nav-row.grandchild{margin-left:34px;padding-left:8px}}
-    @media(max-width:1100px){.app{grid-template-columns:132px 190px 300px minmax(278px,1fr)}.rail{padding:10px 6px 0}.global-search{padding:0 8px;font-size:11px}.rail-item{gap:5px;padding:0 6px;font-size:12px}.rail-icon{width:16px;font-size:15px}.tabs{gap:11px;padding:0 10px}.tab{font-size:13px}.top-tools{gap:8px;padding-right:7px;font-size:10px}.top-tools i{font-size:14px}.nav-heading,.nav-row{font-size:13px}.nav-row.child{padding-left:30px}.nav-row.grandchild{margin-left:22px;padding-left:8px;font-size:12px}.section-pages .nav-row{padding-left:34px;font-size:12px}.list-head{font-size:13px}.card-title{font-size:12px;line-height:19px}.card-bottom{font-size:10px}.empty-art{width:120px;height:113px}.empty-note,.open-button{font-size:13px}}
+    @media(max-width:1100px){.app{grid-template-columns:132px 190px 300px minmax(278px,1fr)}.rail{padding:10px 6px 0}.global-search{padding:0 8px;font-size:11px}.rail-item{gap:5px;padding:0 6px;font-size:12px}.rail-icon{width:16px;font-size:15px}.tabs{gap:11px;padding:0 10px}.tab{font-size:13px}.top-tools{gap:8px;padding-right:7px;font-size:10px}.top-tools i{font-size:14px}.nav-heading,.nav-row{font-size:13px}.nav-row.child{padding-left:30px}.nav-row.grandchild{margin-left:22px;padding-left:8px;font-size:12px}.section-pages .nav-row{padding-left:34px;font-size:12px}.list-head{font-size:13px}.card-title{font-size:12px;line-height:19px}.card-top,.card-bottom{font-size:10px}.empty-art{width:120px;height:113px}.empty-note,.open-button{font-size:13px}}
   </style>
 </head>
 <body>
@@ -126,14 +126,14 @@
     <section class="list-pane" aria-label="待办列表">
       <div class="list-head"><span id="listTitle">所有时间⌄</span><span>☷</span></div>
       <div class="cards" id="todoCards">
-        <button class="task-card selected" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due muted">◷ │ 21 小时前到达</span></div></button>
-        <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 1 天前到达</span></div></button>
-        <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 4 天前到达</span></div></button>
-        <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 289 天前到达</span></div></button>
-        <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 289 天前到达</span></div></button>
-        <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 305 天前到达</span></div></button>
+        <button class="task-card selected" type="button"><div class="card-top"><span>考勤</span><span>审批中</span></div><div class="card-title">许大庆 提交的 xxx的转正申请</div><div class="card-bottom"><span class="originator">许大庆</span><span class="card-time">到达时间：2026/10/15 15:25</span></div></button>
       </div>
-      <div class="list-empty" id="listEmpty" hidden>列表内容待补充</div>
+      <div class="cards" id="doneCards" hidden>
+        <article class="task-card"><div class="card-top"><span>考勤</span><span>同意</span></div><div class="card-title">许大庆 提交的 xxx的转正申请</div><div class="card-bottom"><span class="originator">许大庆</span><span class="card-time">处理时间：2026/10/15 15:59</span></div></article>
+      </div>
+      <div class="cards" id="startedCards" hidden>
+        <article class="task-card"><div class="card-top"><span>考勤</span><span>审批中</span></div><div class="card-title">许大庆 提交的 xxx的转正申请</div><div class="card-bottom"><span class="originator">许大庆</span><span class="card-time">发起时间：2026/10/15 15:25</span></div></article>
+      </div>
     </section>
     <section class="detail-wrap" aria-label="待办详情预览"><div class="detail">
       <svg class="empty-art" viewBox="0 0 160 150" role="img" aria-label="浏览器打开提示插画">
@@ -164,7 +164,8 @@
     const listTitle = document.getElementById('listTitle');
     const listPane = document.querySelector('.list-pane');
     const todoCards = document.getElementById('todoCards');
-    const listEmpty = document.getElementById('listEmpty');
+    const doneCards = document.getElementById('doneCards');
+    const startedCards = document.getElementById('startedCards');
     const viewNav = {
       todo: document.getElementById('todoNav'),
       done: document.getElementById('doneHroneNav'),
@@ -181,12 +182,11 @@
         listTitle.textContent = view === 'todo' ? '所有时间⌄' : view === 'done' ? '已办 · HRONE待办' : '已发起 · HRPNE审批';
         listPane.setAttribute('aria-label', view === 'todo' ? '待办列表' : view === 'done' ? '已办列表' : '已发起列表');
         todoCards.hidden = view !== 'todo';
-        listEmpty.hidden = view === 'todo';
+        doneCards.hidden = view !== 'done';
+        startedCards.hidden = view !== 'started';
       });
     }
-    document.querySelectorAll('.task-card').forEach((card, index) => card.addEventListener('click', () => {
-      document.querySelectorAll('.task-card').forEach(item => item.classList.toggle('selected', item === card));
-      if (index !== 0) return;
+    document.querySelectorAll('#todoCards .task-card').forEach(card => card.addEventListener('click', () => {
       if (window.parent !== window) window.parent.postMessage({ type:'hrone-open-feishu-todo-detail' }, '*');
       else window.location.href = 'feishu-todo-approval-detail.html';
     }));
