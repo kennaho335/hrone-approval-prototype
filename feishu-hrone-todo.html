@@ -38,6 +38,7 @@
     .nav-row.child{padding-left:52px}
     .nav-row.grandchild{min-height:42px;margin:0 1px 0 36px;padding-left:16px;border-radius:8px;font-size:14px}
     .nav-row.current{background:#edf2ff;color:#286dff;font-weight:600}
+    .nav-link{width:100%;border:0;background:transparent;text-align:left;color:inherit}
     .nav-row.section{gap:9px}
     .section-toggle{width:100%;border:0;background:#fff;text-align:left;color:inherit}
     .section-toggle[aria-expanded="true"]{background:#f1f1f1;border-radius:8px}
@@ -49,6 +50,8 @@
     .list-head{display:flex;align-items:center;justify-content:space-between;flex:none;height:59px;padding:0 15px;font-size:16px}
     .list-head span:last-child{color:#758194;font-size:20px}
     .cards{flex:1;min-height:0;overflow:auto;padding:0 10px 10px;scrollbar-width:thin;scrollbar-color:#d9dee7 transparent}
+    .cards[hidden],.list-empty[hidden]{display:none}
+    .list-empty{display:flex;flex:1;align-items:center;justify-content:center;color:#8b98aa;font-size:14px}
     .task-card{display:block;width:100%;min-height:95px;margin:0 0 10px;padding:13px 15px;text-align:left;color:#495568;background:#fff;border:1px solid #dadee5;border-radius:10px}
     .task-card.selected{border-color:#3973ff;box-shadow:0 0 0 1px #3973ff inset}
     .task-card:hover{border-color:#8eacff}
@@ -97,14 +100,14 @@
         <div class="nav-row child">EHR飞书待办<span class="count">40</span></div>
         <div class="oa-group">
           <div class="nav-row child">OA审批<span class="count">8</span></div>
-          <div class="nav-row grandchild current" aria-current="page">HRONE待办</div>
+          <button class="nav-row grandchild nav-link current" id="todoNav" type="button" aria-current="page">HRONE待办</button>
         </div>
         <button class="nav-row section section-toggle" id="doneToggle" type="button" aria-expanded="false" aria-controls="donePages"><span class="chevron">▸</span><span>☑</span>已办</button>
         <div class="section-pages" id="donePages" hidden>
           <div class="nav-row">EHR 飞书待办</div>
           <div class="nav-row">法务系统审批</div>
           <div class="nav-row">OA审批</div>
-          <div class="nav-row">HRONE待办</div>
+          <button class="nav-row nav-link" id="doneHroneNav" type="button">HRONE待办</button>
         </div>
         <div class="nav-row section"><span>▸</span><span>▤</span>抄送我<span class="count">99+</span></div>
         <button class="nav-row section section-toggle" id="startedToggle" type="button" aria-expanded="false" aria-controls="startedPages"><span class="chevron">▸</span><span>▣</span>已发起</button>
@@ -114,14 +117,14 @@
           <div class="nav-row">服务台向用户推送消息...</div>
           <div class="nav-row">EHR飞书待办</div>
           <div class="nav-row">OA审批</div>
-          <div class="nav-row">HRPNE审批</div>
+          <button class="nav-row nav-link" id="startedHrpneNav" type="button">HRPNE审批</button>
         </div>
       </div>
       <div class="side-footer">☷ 收起导航</div>
     </nav>
     <section class="list-pane" aria-label="待办列表">
-      <div class="list-head"><span>所有时间⌄</span><span>☷</span></div>
-      <div class="cards">
+      <div class="list-head"><span id="listTitle">所有时间⌄</span><span>☷</span></div>
+      <div class="cards" id="todoCards">
         <button class="task-card selected" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due muted">◷ │ 21 小时前到达</span></div></button>
         <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 1 天前到达</span></div></button>
         <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 4 天前到达</span></div></button>
@@ -129,6 +132,7 @@
         <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 289 天前到达</span></div></button>
         <button class="task-card" type="button"><div class="card-title">请审批：{发起人} 提交的 {流程标题}</div><div class="card-bottom"><span class="originator">流程发起人：xxx</span><span class="due">◷ │ 305 天前到达</span></div></button>
       </div>
+      <div class="list-empty" id="listEmpty" hidden>列表内容待补充</div>
     </section>
     <section class="detail-wrap" aria-label="待办详情预览"><div class="detail">
       <svg class="empty-art" viewBox="0 0 160 150" role="img" aria-label="浏览器打开提示插画">
@@ -154,6 +158,29 @@
         toggle.setAttribute('aria-expanded', String(expanded));
         pages.hidden = !expanded;
         toggle.querySelector('.chevron').textContent = expanded ? '▾' : '▸';
+      });
+    }
+    const listTitle = document.getElementById('listTitle');
+    const listPane = document.querySelector('.list-pane');
+    const todoCards = document.getElementById('todoCards');
+    const listEmpty = document.getElementById('listEmpty');
+    const viewNav = {
+      todo: document.getElementById('todoNav'),
+      done: document.getElementById('doneHroneNav'),
+      started: document.getElementById('startedHrpneNav')
+    };
+    for (const [view, nav] of Object.entries(viewNav)) {
+      nav.addEventListener('click', () => {
+        for (const item of Object.values(viewNav)) {
+          item.classList.remove('current');
+          item.removeAttribute('aria-current');
+        }
+        nav.classList.add('current');
+        nav.setAttribute('aria-current', 'page');
+        listTitle.textContent = view === 'todo' ? '所有时间⌄' : view === 'done' ? '已办 · HRONE待办' : '已发起 · HRPNE审批';
+        listPane.setAttribute('aria-label', view === 'todo' ? '待办列表' : view === 'done' ? '已办列表' : '已发起列表');
+        todoCards.hidden = view !== 'todo';
+        listEmpty.hidden = view === 'todo';
       });
     }
     document.querySelectorAll('.task-card').forEach((card, index) => card.addEventListener('click', () => {
