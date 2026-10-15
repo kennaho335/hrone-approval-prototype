@@ -34,11 +34,14 @@
     .side-config { display:flex; align-items:center; gap:7px; padding:0 27px; height:47px; color:#172a46; font-size:14px; }
     .side-bottom { position:absolute; right:0; bottom:0; left:0; height:32px; border-top:1px solid #edf0f3; color:#4286f8; text-align:right; padding:7px 17px; }
     .workspace { position:absolute; top:52px; right:0; bottom:0; left:220px; min-width:0; display:flex; flex-direction:column; }
-    .tabs { flex:0 0 41px; display:flex; align-items:stretch; margin:0 10px; border-radius:9px; background:#fafbfe; }
+    .tabs { flex:0 0 41px; display:flex; align-items:stretch; margin:0 10px; border-radius:9px 9px 0 0; background:#fafbfe; }
     .tab { min-width:56px; display:grid; place-items:center; padding:0 16px; border:0; color:#293b55; background:transparent; font-size:12px; }
     .tab.active { border-bottom:2px solid var(--blue); color:var(--blue); font-weight:600; }
     .tabs .collapse { align-self:center; margin-left:auto; padding:0 8px; color:#2180ff; font-size:17px; }
-    .tab[role="tab"]:focus-visible { outline:2px solid var(--blue); outline-offset:-3px; }
+    .view-tabs { flex:0 0 37px; display:flex; align-items:stretch; gap:2px; margin:0 10px; padding:0 8px; border-radius:0 0 8px 8px; background:#f0f3fc; }
+    .view-tab { min-width:70px; padding:0 13px; border:0; border-bottom:2px solid transparent; color:#253750; background:transparent; font-size:12px; }
+    .view-tab.active { border-bottom-color:var(--blue); color:var(--blue); font-weight:600; }
+    .view-tab:focus-visible { outline:2px solid var(--blue); outline-offset:-3px; }
     [hidden] { display:none !important; }
     .query-card { flex:0 0 auto; margin:10px 10px 0; border-radius:8px; background:#fff; overflow:hidden; }
     .section-title { height:38px; display:flex; align-items:center; gap:5px; padding:0 13px; border-bottom:1px solid var(--line); color:#121d31; font-weight:700; }
@@ -57,8 +60,8 @@
     .table-toolbar { flex:0 0 50px; display:flex; align-items:center; justify-content:flex-end; }
     .settings { width:22px; height:22px; border:0; color:#383e49; background:transparent; font-size:15px; }
     .table-scroll { min-height:0; flex:1; overflow:auto; scrollbar-color:#e4e7ec transparent; scrollbar-width:thin; }
-    .process-table { width:1820px; min-width:1820px; border-collapse:collapse; table-layout:fixed; color:#09101b; }
-    .process-table col:nth-child(1) { width:80px; }.process-table col:nth-child(2) { width:150px; }.process-table col:nth-child(3) { width:180px; }.process-table col:nth-child(4) { width:110px; }.process-table col:nth-child(5) { width:150px; }.process-table col:nth-child(6) { width:100px; }.process-table col:nth-child(7) { width:140px; }.process-table col:nth-child(8) { width:140px; }.process-table col:nth-child(9) { width:90px; }.process-table col:nth-child(10) { width:90px; }.process-table col:nth-child(11) { width:170px; }.process-table col:nth-child(12) { width:310px; }.process-table col:nth-child(13) { width:110px; }
+    .process-table { width:1560px; min-width:1560px; border-collapse:collapse; table-layout:fixed; color:#09101b; }
+    .process-table col:nth-child(1) { width:80px; }.process-table col:nth-child(2) { width:150px; }.process-table col:nth-child(3) { width:180px; }.process-table col:nth-child(4) { width:100px; }.process-table col:nth-child(5) { width:140px; }.process-table col:nth-child(6) { width:140px; }.process-table col:nth-child(7) { width:90px; }.process-table col:nth-child(8) { width:90px; }.process-table col:nth-child(9) { width:170px; }.process-table col:nth-child(10) { width:310px; }.process-table col:nth-child(11) { width:110px; }
     #abnormalTable { width:1860px; min-width:1860px; }
     #abnormalTable col:nth-child(1) { width:70px; }#abnormalTable col:nth-child(2) { width:210px; }#abnormalTable col:nth-child(3) { width:190px; }#abnormalTable col:nth-child(4) { width:95px; }#abnormalTable col:nth-child(5) { width:130px; }#abnormalTable col:nth-child(6) { width:90px; }#abnormalTable col:nth-child(7) { width:280px; }#abnormalTable col:nth-child(8) { width:150px; }#abnormalTable col:nth-child(9) { width:75px; }#abnormalTable col:nth-child(10) { width:140px; }#abnormalTable col:nth-child(11) { width:150px; }#abnormalTable col:nth-child(12) { width:190px; }#abnormalTable col:nth-child(13) { width:90px; }
     th { position:sticky; top:0; z-index:1; height:35px; padding:0 18px 0 8px; border-right:1px solid #edf0f4; background:#fafafa; text-align:left; font-weight:700; white-space:normal; overflow-wrap:anywhere; }
@@ -155,7 +158,8 @@
     <div class="side-bottom">◂|</div>
   </aside>
   <main class="workspace">
-    <nav class="tabs" aria-label="页面标签"><span class="tab">首页</span><button class="tab active" id="allTab" type="button" role="tab" aria-selected="true" aria-controls="allQuery">全部流程</button><button class="tab" id="abnormalTab" type="button" role="tab" aria-selected="false" aria-controls="abnormalQuery">异常流程</button><span class="collapse">⌄</span></nav>
+    <nav class="tabs" aria-label="页面标签"><span class="tab">首页</span><span class="tab active">全部流程</span><span class="collapse">⌄</span></nav>
+    <nav class="view-tabs" role="tablist" aria-label="流程视图"><button class="view-tab active" id="allTab" type="button" role="tab" aria-selected="true" aria-controls="allQuery">全部流程</button><button class="view-tab" id="abnormalTab" type="button" role="tab" aria-selected="false" aria-controls="abnormalQuery">异常流程</button></nav>
     <section class="query-card" id="allQuery" aria-labelledby="query-title">
       <div class="section-title" id="query-title"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12l-4.6 5.4v3.8l-2.8 1.4V8.4Z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>查询条件</div>
       <form id="searchForm" novalidate>
@@ -172,7 +176,7 @@
     </section>
     <section class="table-card" id="allList" aria-label="全部流程列表">
       <div class="table-toolbar"><button class="settings" type="button" aria-label="列表设置" title="列表设置">⚙</button></div>
-      <div class="table-scroll"><table class="process-table"><colgroup><col><col><col><col><col><col><col><col><col><col><col><col><col></colgroup><thead><tr><th>序号</th><th>流程名称</th><th>审批编号</th><th>异常类型</th><th>异常详情</th><th>流程类型</th><th>流程发起人</th><th>当前处理人</th><th>流程状态</th><th>审批状态</th><th>流程创建时间</th><th>流程实例ID</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <div class="table-scroll"><table class="process-table"><colgroup><col><col><col><col><col><col><col><col><col><col><col></colgroup><thead><tr><th>序号</th><th>流程名称</th><th>审批编号</th><th>流程类型</th><th>流程发起人</th><th>当前处理人</th><th>流程状态</th><th>审批状态</th><th>流程创建时间</th><th>流程实例ID</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div>
     </section>
     <section class="query-card" id="abnormalQuery" aria-labelledby="abnormal-query-title" hidden>
       <div class="section-title" id="abnormal-query-title"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12l-4.6 5.4v3.8l-2.8 1.4V8.4Z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>查询条件</div>
@@ -231,16 +235,17 @@
     const rows = document.getElementById('rows');
     document.querySelectorAll('.process-table').forEach(table=>{
     const columns = [...table.querySelectorAll('colgroup col')];
-    const columnWidthsKey = table.id==='abnormalTable'?'hrone-abnormal-processes-column-widths-v1':'hrone-all-processes-column-widths-v2';
+    const columnWidthsKey = table.id==='abnormalTable'?'hrone-abnormal-processes-column-widths-v1':'hrone-all-processes-column-widths-v3';
     const saveColumnWidths = () => {
       try { localStorage.setItem(columnWidthsKey,JSON.stringify(columns.map(column=>Math.round(column.getBoundingClientRect().width)))); } catch {}
     };
     try {
       const currentWidths=JSON.parse(localStorage.getItem(columnWidthsKey));
-      const oldWidths=table.id==='abnormalTable'?null:JSON.parse(localStorage.getItem('hrone-all-processes-column-widths-v1'));
-      const migratedWidths=Array.isArray(oldWidths)&&oldWidths.length===15
-        ? [oldWidths[0],oldWidths[1],oldWidths[2],oldWidths[4],150,...oldWidths.slice(7)]
-        : null;
+      const v2Widths=table.id==='abnormalTable'?null:JSON.parse(localStorage.getItem('hrone-all-processes-column-widths-v2'));
+      const v1Widths=table.id==='abnormalTable'?null:JSON.parse(localStorage.getItem('hrone-all-processes-column-widths-v1'));
+      const previousWidths=Array.isArray(v2Widths)&&v2Widths.length===13?v2Widths:
+        Array.isArray(v1Widths)&&v1Widths.length===15?[v1Widths[0],v1Widths[1],v1Widths[2],v1Widths[4],150,...v1Widths.slice(7)]:null;
+      const migratedWidths=Array.isArray(previousWidths)?previousWidths.filter((_,index)=>index!==3&&index!==4):null;
       const savedWidths=Array.isArray(currentWidths)&&currentWidths.length===columns.length?currentWidths:migratedWidths;
       if(Array.isArray(savedWidths)&&savedWidths.length===columns.length&&savedWidths.every(width=>Number.isFinite(width)&&width>=40)) {
         savedWidths[columns.length-1]=Math.max(100,savedWidths[columns.length-1]);
@@ -303,14 +308,13 @@
     const copyButton = value => `<button type="button" class="copy" data-copy="${value}" aria-label="复制">▣</button>`;
     const render = list => {
       rows.replaceChildren();
-      if (!list.length) { const tr=document.createElement('tr'); tr.innerHTML='<td class="empty" colspan="13">暂无数据</td>'; rows.appendChild(tr); return; }
+      if (!list.length) { const tr=document.createElement('tr'); tr.innerHTML='<td class="empty" colspan="11">暂无数据</td>'; rows.appendChild(tr); return; }
       list.forEach((item,index)=>{
         const [name,no,type,starter,handler,status,created,id] = item;
         const anomaly = anomalies[no];
         const workflowState = anomaly ? '异常' : '正常';
         const tr=document.createElement('tr');
-        const anomalyDetails=anomaly?`<div>异常信息：${anomaly.message}</div><div>异常发生时间：${anomaly.time}</div>`:'';
-        tr.innerHTML = `<td>${index+1}</td><td><button class="flow-name-link" type="button" data-open-flow-detail>${name}</button></td><td><span class="blue-link">${no}</span>${copyButton(no)}</td><td>${anomaly?.type || ''}</td><td class="anomaly-details">${anomalyDetails}</td><td>${type}</td><td class="person-cell">${starter}</td><td class="person-cell">${handler}</td><td><span class="workflow-state ${anomaly ? 'abnormal' : ''}">${workflowState}</span></td><td><span class="approval-state" data-status="${status}">${status}</span></td><td>${created}</td><td><span class="blue-link">${id}</span>${copyButton(id)}</td><td><div class="actions">${status==='审批中'?iconAction('节点干预',flow,'node-intervene')+iconAction('催办',bell):''}${iconAction('更多','···','more')}</div></td>`;
+        tr.innerHTML = `<td>${index+1}</td><td><button class="flow-name-link" type="button" data-open-flow-detail>${name}</button></td><td><span class="blue-link">${no}</span>${copyButton(no)}</td><td>${type}</td><td class="person-cell">${starter}</td><td class="person-cell">${handler}</td><td><span class="workflow-state ${anomaly ? 'abnormal' : ''}">${workflowState}</span></td><td><span class="approval-state" data-status="${status}">${status}</span></td><td>${created}</td><td><span class="blue-link">${id}</span>${copyButton(id)}</td><td><div class="actions">${status==='审批中'?iconAction('节点干预',flow,'node-intervene')+iconAction('催办',bell):''}${iconAction('更多','···','more')}</div></td>`;
         rows.appendChild(tr);
       });
     };
@@ -331,7 +335,7 @@
       list.forEach((item,index)=>{
         const [name,no,node,time,created,id]=item;
         const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${index+1}</td><td><button class="flow-name-link" type="button" data-open-flow-detail>${name}</button></td><td><span class="blue-link">${no}</span>${copyButton(no)}</td><td><span class="workflow-state abnormal">异常</span></td><td>${node}</td><td>分支异常</td><td class="anomaly-details">${abnormalMessage}</td><td>${time}</td><td>人事</td><td class="person-cell">雷佳俊(zt20292)</td><td>${created}</td><td><span class="blue-link">${id}</span></td><td><button class="action" type="button" data-open-flow-detail aria-label="查看详情" title="查看详情">⌕</button></td>`;
+        tr.innerHTML=`<td>${index+1}</td><td><button class="flow-name-link" type="button" data-open-flow-detail>${name}</button></td><td><span class="blue-link">${no}</span>${copyButton(no)}</td><td><span class="workflow-state abnormal">异常</span></td><td>${node}</td><td>分支异常</td><td class="anomaly-details">${abnormalMessage}</td><td>${time}</td><td>人事</td><td class="person-cell">雷佳俊(zt20292)</td><td>${created}</td><td><span class="blue-link">${id}</span></td><td>${iconAction('节点干预',flow,'node-intervene')}</td>`;
         abnormalRows.appendChild(tr);
       });
     };
