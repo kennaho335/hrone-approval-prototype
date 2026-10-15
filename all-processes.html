@@ -536,7 +536,7 @@
     });
     document.getElementById('abnormalReset').addEventListener('click',()=>{ document.getElementById('abnormalSearchForm').reset(); renderAbnormal(abnormalItems); });
     const handleRowClick=async event=>{
-      if(event.target.closest('[data-open-flow-detail], .go-process')) {
+      if(event.target.closest('[data-open-flow-detail]')) {
         if(window.parent===window) location.href='approval-detail-flow.html';
         else window.parent.postMessage({type:'hrone-open-flow-approval-detail'},'*');
         return;
