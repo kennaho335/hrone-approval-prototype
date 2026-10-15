@@ -188,7 +188,6 @@
           <div class="field"><label for="abnormalApprovalNo">审批编号</label><input id="abnormalApprovalNo" type="text" placeholder="请输入"></div>
           <div class="field"><label for="abnormalFlowType">流程类型</label><select id="abnormalFlowType" required><option value="" selected>请选择</option><option>人事</option></select></div>
           <div class="field"><label for="abnormalType">异常类型</label><select id="abnormalType" required><option value="" selected>请选择</option><option>分支异常</option></select></div>
-          <div class="field"><label for="abnormalWorkflowState">流程状态</label><select id="abnormalWorkflowState" required><option value="" selected>请选择</option><option>正常</option><option>异常</option></select></div>
         </div>
         <div class="filter-actions"><button class="reset" id="abnormalReset" type="button">⟲ 重置</button><button class="search-button" type="submit">⌕ 查询</button></div>
       </form>
@@ -533,8 +532,7 @@
       const no=document.getElementById('abnormalApprovalNo').value.trim().toLowerCase();
       const type=document.getElementById('abnormalFlowType').value;
       const anomalyType=document.getElementById('abnormalType').value;
-      const workflowState=document.getElementById('abnormalWorkflowState').value;
-      renderAbnormal(abnormalItems.filter(item=>(!name||item[0].toLowerCase().includes(name))&&(!no||item[1].toLowerCase().includes(no))&&(!type||type==='人事')&&(!anomalyType||anomalyType==='分支异常')&&(!workflowState||workflowState==='异常')));
+      renderAbnormal(abnormalItems.filter(item=>(!name||item[0].toLowerCase().includes(name))&&(!no||item[1].toLowerCase().includes(no))&&(!type||type==='人事')&&(!anomalyType||anomalyType==='分支异常')));
     });
     document.getElementById('abnormalReset').addEventListener('click',()=>{ document.getElementById('abnormalSearchForm').reset(); renderAbnormal(abnormalItems); });
     const handleRowClick=async event=>{
