@@ -79,6 +79,11 @@
     th.select-cell,td.select-cell{text-align:center}
     th.number-cell,td.number-cell{text-align:center}
     td a,.text-action{color:var(--blue);text-decoration:none}
+    .name-content{display:flex;align-items:center;gap:6px;min-width:0}
+    .name-content a{min-width:0;overflow:hidden;text-overflow:ellipsis}
+    .status-label{flex:none;padding:0 5px;border:1px solid;border-radius:3px;font-size:11px;line-height:17px;font-weight:600}
+    .status-label.normal{border-color:#bcd4ff;color:#1769ff;background:#edf4ff}
+    .status-label.abnormal{border-color:#ffc6ca;color:#e23b45;background:#fff0f1}
     .text-action{padding:0;border:0;background:transparent}
     .action-cell{position:sticky;right:0;z-index:1;background:#fff;box-shadow:-4px 0 7px rgba(25,45,80,.04)}
     tbody tr:nth-child(even) .action-cell{background:#fafafa}
@@ -174,7 +179,7 @@
     const tbody = document.getElementById('recordRows');
     const escapeHtml = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
     function render(data){
-      tbody.innerHTML = data.map((row,index) => `<tr><td class="select-cell"><input type="checkbox" aria-label="选择第${index+1}条"></td><td class="number-cell">${index+1}</td>${row.map((value,i) => `<td${i===14 ? ' class="action-cell"' : ''} title="${escapeHtml(value)}">${i===0 ? `<a href="#" onclick="return false">${escapeHtml(value)}</a>` : i===14 && value!=='--' ? `<button class="text-action" type="button">${escapeHtml(value)}</button>` : escapeHtml(value)}</td>`).join('')}</tr>`).join('');
+      tbody.innerHTML = data.map((row,index) => `<tr><td class="select-cell"><input type="checkbox" aria-label="选择第${index+1}条"></td><td class="number-cell">${index+1}</td>${row.map((value,i) => `<td${i===14 ? ' class="action-cell"' : ''} title="${escapeHtml(value)}">${i===0 ? `<span class="name-content"><a href="#" onclick="return false">${escapeHtml(value)}</a><span class="status-label ${row===rows[0] ? 'abnormal' : 'normal'}">${row===rows[0] ? '异常' : '正常'}</span></span>` : i===14 && value!=='--' ? `<button class="text-action" type="button">${escapeHtml(value)}</button>` : escapeHtml(value)}</td>`).join('')}</tr>`).join('');
       if (!data.length) tbody.innerHTML = '<tr><td colspan="17" style="height:90px;text-align:center;color:#8c98aa">暂无数据</td></tr>';
     }
     render(rows);
