@@ -59,6 +59,8 @@
     .date-range span{color:#78859a}
     .filter-footer{display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 13px}
     .advanced{padding:0;border:0;color:var(--blue);background:transparent}
+    .advanced-field{display:none}
+    .advanced-field.visible{display:block}
     .filter-actions{display:flex;gap:8px}
     .filter-actions button{height:31px;padding:0 13px;border-radius:4px}
     .reset{border:1px solid #d8dce3;color:#1a2538;background:#fff}
@@ -146,8 +148,9 @@
           <div class="field"><label for="department">部门</label><div class="control"><input id="department" type="text" placeholder="请选择部门"></div></div>
           <div class="field"><label for="approvalStatus">审批状态</label><div class="control"><select id="approvalStatus" required><option value="" selected disabled>请选择</option><option>审批中</option><option>同意</option></select></div></div>
           <div class="field"><label for="dateStart">调动日期</label><div class="date-range"><input id="dateStart" type="text" placeholder="开始日期" aria-label="调动开始日期"><span>~</span><input id="dateEnd" type="text" placeholder="结束日期" aria-label="调动结束日期"></div></div>
+          <div class="field advanced-field" id="processStatusField"><label for="processStatus">流程状态</label><div class="control"><select id="processStatus"><option value="" selected>请选择</option><option value="正常">正常</option><option value="异常">异常</option></select></div></div>
         </div>
-        <div class="filter-footer"><button class="advanced" type="button">▣ 显示高级筛选</button><div class="filter-actions"><button class="reset" id="resetButton" type="button">◌ 重置</button><button class="search" id="searchButton" type="button">⌕ 查询</button></div></div>
+        <div class="filter-footer"><button class="advanced" id="advancedButton" type="button">▣ 显示高级筛选</button><div class="filter-actions"><button class="reset" id="resetButton" type="button">◌ 重置</button><button class="search" id="searchButton" type="button">⌕ 查询</button></div></div>
       </section>
       <section class="table-card" aria-label="调动列表">
         <div class="table-toolbar"><button class="primary" type="button">＋ 新增</button><button class="primary" type="button">⇩ 导出</button><button class="secondary" type="button">⚙ 导出设置</button></div>
@@ -178,14 +181,16 @@
     ];
     const tbody = document.getElementById('recordRows');
     const escapeHtml = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    const getStatus = row => row === rows[0] ? '异常' : '正常';
     function render(data){
-      tbody.innerHTML = data.map((row,index) => `<tr><td class="select-cell"><input type="checkbox" aria-label="选择第${index+1}条"></td><td class="number-cell">${index+1}</td>${row.map((value,i) => `<td${i===14 ? ' class="action-cell"' : ''} title="${escapeHtml(value)}">${i===0 ? `<span class="name-content"><a href="#" onclick="return false">${escapeHtml(value)}</a><span class="status-label ${row===rows[0] ? 'abnormal' : 'normal'}">${row===rows[0] ? '异常' : '正常'}</span></span>` : i===14 && value!=='--' ? `<button class="text-action" type="button">${escapeHtml(value)}</button>` : escapeHtml(value)}</td>`).join('')}</tr>`).join('');
+      tbody.innerHTML = data.map((row,index) => { const status=getStatus(row); return `<tr><td class="select-cell"><input type="checkbox" aria-label="选择第${index+1}条"></td><td class="number-cell">${index+1}</td>${row.map((value,i) => `<td${i===14 ? ' class="action-cell"' : ''} title="${escapeHtml(value)}">${i===0 ? `<span class="name-content"><a href="#" onclick="return false">${escapeHtml(value)}</a><span class="status-label ${status==='异常' ? 'abnormal' : 'normal'}">${status}</span></span>` : i===14 && value!=='--' ? `<button class="text-action" type="button">${escapeHtml(value)}</button>` : escapeHtml(value)}</td>`).join('')}</tr>`; }).join('');
       if (!data.length) tbody.innerHTML = '<tr><td colspan="17" style="height:90px;text-align:center;color:#8c98aa">暂无数据</td></tr>';
     }
     render(rows);
     document.getElementById('selectAll').addEventListener('change',event => document.querySelectorAll('#recordRows input[type=checkbox]').forEach(input => input.checked = event.target.checked));
-    document.getElementById('resetButton').addEventListener('click',() => { document.getElementById('employee').value=''; document.getElementById('department').value=''; document.getElementById('approvalStatus').selectedIndex=0; document.getElementById('dateStart').value=''; document.getElementById('dateEnd').value=''; render(rows); });
-    document.getElementById('searchButton').addEventListener('click',() => { const employee=document.getElementById('employee').value.trim().toLowerCase(); const department=document.getElementById('department').value.trim().toLowerCase(); render(rows.filter(row => (!employee || (row[0]+row[1]).toLowerCase().includes(employee)) && (!department || (row[2]+row[3]).toLowerCase().includes(department)))); });
+    document.getElementById('advancedButton').addEventListener('click',event => { const field=document.getElementById('processStatusField'); const visible=field.classList.toggle('visible'); event.currentTarget.textContent=visible ? '▣ 收起高级筛选' : '▣ 显示高级筛选'; });
+    document.getElementById('resetButton').addEventListener('click',() => { document.getElementById('employee').value=''; document.getElementById('department').value=''; document.getElementById('approvalStatus').selectedIndex=0; document.getElementById('dateStart').value=''; document.getElementById('dateEnd').value=''; document.getElementById('processStatus').selectedIndex=0; render(rows); });
+    document.getElementById('searchButton').addEventListener('click',() => { const employee=document.getElementById('employee').value.trim().toLowerCase(); const department=document.getElementById('department').value.trim().toLowerCase(); const processStatus=document.getElementById('processStatus').value; render(rows.filter(row => (!employee || (row[0]+row[1]).toLowerCase().includes(employee)) && (!department || (row[2]+row[3]).toLowerCase().includes(department)) && (!processStatus || getStatus(row)===processStatus))); });
   </script>
 </body>
 </html>
