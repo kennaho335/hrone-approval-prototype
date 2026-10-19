@@ -43,7 +43,7 @@
           <ul class="subtree"><li class="leaf"><button class="page-link" data-page="feishuTodoDetail" type="button">待办审批详情页</button></li></ul>
         </li>
         <li class="group"><button class="group-toggle" type="button" aria-expanded="true" aria-controls="flowPages">流程查询<span class="group-chevron" aria-hidden="true">⌃</span></button>
-          <ul class="subtree" id="flowPages"><li class="leaf"><button class="page-link" data-page="allProcesses" type="button">全部流程</button></li><li class="leaf"><button class="page-link" data-page="flowApprovalDetail" type="button">流程异常审批详情页</button></li></ul>
+          <ul class="subtree" id="flowPages"><li class="leaf"><button class="page-link" data-page="allProcesses" type="button">全部流程</button></li><li class="leaf"><button class="page-link" data-page="flowApprovalDetail" type="button">流程异常审批详情页</button></li><li class="leaf"><button class="page-link" data-page="processStatusLabel" type="button">流程状态标签</button></li></ul>
         </li>
         <li class="leaf"><button class="page-link" data-page="void" type="button">作废</button></li>
         <li class="group"><button class="group-toggle" type="button" aria-expanded="true" aria-controls="operationPages">审批操作<span class="group-chevron" aria-hidden="true">⌃</span></button>
@@ -76,6 +76,7 @@
     const pages = {
       allProcesses:'all-processes.html?v=20261015-go-process-v5',
       flowApprovalDetail:'approval-detail-flow.html?v=20261015-anomaly-time',
+      processStatusLabel:'process-status-label.html?v=20261019-initial',
       void:'void.html',
       feishuTodo:'feishu-hrone-todo.html?v=20261015-approval-cards-v5',
       feishuTodoDetail:'feishu-todo-approval-detail.html',
