@@ -130,6 +130,7 @@
     .node-search span { position:absolute; top:5px; right:9px; color:#a8b5c3; font-size:16px; }
     .node-options { max-height:218px; overflow:auto; padding-top:3px; }
     .node-option,.executor-option { width:100%; min-height:30px; display:block; padding:6px 12px; border:0; border-radius:4px; color:#3b4654; background:#fff; text-align:left; font:inherit; cursor:pointer; }
+    .node-option { display:flex; align-items:center; gap:8px; }.node-option .node-name { color:#3b4654; }.node-option .node-id { color:#8a95a3; font:12px/1.2 ui-monospace,SFMono-Regular,Consolas,"Microsoft YaHei",monospace; }.node-option .node-id:before { content:'·'; margin-right:8px; color:#b5bdc8; font-family:inherit; }
     .node-option:hover,.node-option:focus-visible,.executor-option:hover,.executor-option:focus-visible { outline:none; background:#f3f3f3; }
     .node-empty,.executor-empty { padding:8px 12px; color:#9aa3ae; }
     .executor-results { position:absolute; z-index:4; top:calc(100% + 4px); left:0; right:0; max-height:185px; overflow:auto; padding:4px; border:1px solid #d9d9d9; border-radius:5px; background:#fff; box-shadow:0 6px 15px #0002; }
@@ -390,7 +391,16 @@
     const interventionComment=document.getElementById('interventionComment');
     const interventionCommentRequired=document.getElementById('interventionCommentRequired');
     const interventionCommentError=document.getElementById('interventionCommentError');
-    const interventionNodes=['区域HRBP负责人','HRBP经理','HRBP负责人','调整部门负责人','部门负责人直接上级','部门负责人间接上级','发起人','结束'];
+    const interventionNodes=[
+      {name:'区域HRBP负责人',id:'flow_124011334285'},
+      {name:'HRBP经理',id:'flow_124011334286'},
+      {name:'HRBP负责人',id:'flow_124011334287'},
+      {name:'调整部门负责人',id:'flow_124011334288'},
+      {name:'部门负责人直接上级',id:'flow_124011334289'},
+      {name:'部门负责人间接上级',id:'flow_124011334290'},
+      {name:'发起人',id:'flow_124011334291'},
+      {name:'结束',id:'flow_124011334292'}
+    ];
     const employeeDirectory=Array.isArray(window.HRONE_EMPLOYEES)?window.HRONE_EMPLOYEES:[
       {name:'雷佳俊',id:'zt20292'},{name:'移动端离职4',id:'zt9900130'},{name:'许大庆',id:'zt25050'},
       {name:'黄东升',id:'WX21197'},{name:'谭小龙',id:'WX21199'},{name:'谭雨薇',id:'WX21567'}
@@ -405,13 +415,13 @@
     const renderNodeOptions=()=>{
       const query=interventionNodeSearch.value.trim().toLocaleLowerCase();
       interventionNodeOptions.replaceChildren();
-      const matches=interventionNodes.filter(node=>node.toLocaleLowerCase().includes(query));
+      const matches=interventionNodes.filter(node=>`${node.name} ${node.id}`.toLocaleLowerCase().includes(query));
       if(!matches.length){ const empty=document.createElement('div'); empty.className='node-empty'; empty.textContent='无匹配节点'; interventionNodeOptions.appendChild(empty); }
       matches.forEach(node=>{
-        const option=document.createElement('button'); option.type='button'; option.className='node-option'; option.setAttribute('role','option'); option.textContent=node;
+        const option=document.createElement('button'); option.type='button'; option.className='node-option'; option.setAttribute('role','option'); option.innerHTML=`<span class="node-name">${node.name}</span><span class="node-id">${node.id}</span>`;
         option.addEventListener('click',()=>{
-          interventionTo.value=node;
-          document.getElementById('interventionNodeLabel').textContent=node;
+          interventionTo.value=node.name;
+          document.getElementById('interventionNodeLabel').textContent=`${node.name} · ${node.id}`;
           interventionNodeTrigger.classList.remove('placeholder','invalid');
           document.getElementById('interventionToError').classList.remove('show');
           setNodePopupOpen(false);
