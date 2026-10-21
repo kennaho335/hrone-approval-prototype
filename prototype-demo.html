@@ -82,6 +82,7 @@
       feishuTodoDetail:'feishu-todo-approval-detail.html',
       home:'hrone-home.html',
       operation:'approval-operation.html',
+      processConfig:'process-config.html?v=20261021-process-config',
       base:'approval-detail-original.html',
       original:'approval-detail.html',
       after:'approval-detail-after.html?v=20261019-recall-action',
@@ -122,6 +123,10 @@
         openPage('feishuTodoDetail');
       } else if (event.data.type === 'hrone-open-flow-approval-detail') {
         openPage('flowApprovalDetail');
+      } else if (event.data.type === 'hrone-open-process-config') {
+        openPage('processConfig');
+      } else if (event.data.type === 'hrone-open-all-processes') {
+        openPage('allProcesses');
       } else if (event.data.type === 'hrone-open-front' || event.data.type === 'hrone-front-sign') {
         const front = new URL(pages.original,location.href);
         front.searchParams.set('signTime',event.data.signTime);
