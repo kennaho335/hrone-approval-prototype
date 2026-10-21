@@ -65,7 +65,7 @@
   <div class="app drawer-closed">
     <div class="shell">
       <header class="global-header"><div class="logo">HR<span style="color:#ffb000">O</span>NE</div><div class="home">⌂</div><div class="all-menu">👥 全部菜单　⌄</div><div class="module">流程管理 ×</div><div class="header-tools"><div class="search">快捷菜单搜索　　⌕</div><div class="round">◎</div><div class="round">✉</div><div class="round">♟</div><div class="user">◉ CoreHR实施账号2</div></div></header>
-      <aside class="sidebar"><div class="nav">♧　流程查询 <span class="chev">⌄</span></div><div class="nav">▥　流程配置</div></aside>
+      <aside class="sidebar"><div class="nav">♧　流程查询 <span class="chev">⌄</span></div><button class="nav" id="processConfigNav" type="button">▥　流程配置</button></aside>
       <main class="workspace"><div class="crumb">首页　　流程配置　　<span class="active-crumb">转正流程</span></div><section class="content"><div class="content-head"><h2>流程设计 · 人事 · 转正流程</h2><div class="page-actions"><button>⊗ 取消</button><button>▣ 复制流程图</button><button>♧ 导入流程图</button><button>▣ 暂存</button><button class="publish">➤ 发布</button></div></div><div class="canvas"><div class="zoom"><span class="zoom-icon">⌕</span><span>100%</span><span class="zoom-icon">⊕</span></div><div class="flow-stack"><div class="process-card start"><div class="card-title">发起人1</div><div class="card-body">配置完成，点击查看 <span class="arrow">›</span></div></div><div class="connector"><span class="plus">+</span></div><div class="process-card" id="approvalNode" data-drawer-trigger role="button" tabindex="0"><div class="card-title">HRBP审核 <span class="close">×</span></div><div class="card-body">配置完成，点击查看 <span class="arrow">›</span></div></div><div class="connector"><span class="plus">+</span></div><div class="process-card"><div class="card-title">员工确认 <span class="close">×</span></div><div class="card-body">配置完成，点击查看 <span class="arrow">›</span></div></div><div class="connector"><span class="plus">+</span></div><div class="process-card"><div class="card-title">直接上级审核 <span class="close">×</span></div><div class="card-body">配置完成，点击查看 <span class="arrow">›</span></div></div><div class="connector"><span class="plus">+</span></div></div></div></section></main>
     </div>
     <div class="dim"></div>
@@ -102,6 +102,10 @@
     };
     document.getElementById('approvalNode').addEventListener('click', openDrawer);
     document.getElementById('approvalNode').addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openDrawer(); } });
+    document.getElementById('processConfigNav').addEventListener('click', () => {
+      if (window.parent !== window) window.parent.postMessage({type:'hrone-open-process-config'}, '*');
+      else location.href = 'process-config.html';
+    });
   </script>
 </body>
 </html>
