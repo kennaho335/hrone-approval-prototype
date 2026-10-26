@@ -204,6 +204,7 @@
     });
     document.getElementById('agree').addEventListener('click',()=>{
       document.getElementById('approvalError').classList.add('show');
+      return;
       if (location.pathname.endsWith('/approval-detail-approved.html')) return;
       if (lastSignMode === 'after') {
         const target = new URL('approval-detail-signer.html',location.href);
