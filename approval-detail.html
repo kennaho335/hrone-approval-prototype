@@ -35,9 +35,12 @@
     .meta { flex-wrap:wrap; gap:8px 16px; }
     .title-actions { flex:0 1 auto; flex-wrap:wrap; justify-content:flex-end; gap:8px; min-width:0; }
     .title-actions button { flex:0 1 auto; white-space:nowrap; }
-    .approval-error { position:static; flex:1 0 100%; max-width:calc(100% - 68px); margin-left:68px; white-space:normal; }
+    .approval-error { display:none; position:fixed; z-index:30; left:12px; top:12px; max-width:calc(100vw - 24px); margin:0; padding:8px 14px 8px 34px; border:1px solid #e5e7eb; border-radius:8px; color:#4b5563; background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.18); font-size:12px; line-height:18px; white-space:nowrap; }
+    .approval-error::before { content:'×'; position:absolute; left:10px; top:8px; width:16px; height:16px; border-radius:50%; color:#fff; background:#ff4d4f; font-size:12px; line-height:16px; text-align:center; font-weight:700; }
+    .approval-error.show { display:block; }
     @media (max-width:1280px) { .title-card { padding:14px 18px; }.title-actions { gap:6px; }.title-actions button { padding:0 8px; } }
-    @media (max-width:960px) { .title-card { padding:14px; }.title-copy { flex-basis:calc(100% - 70px); }.title-actions { flex:1 0 100%; justify-content:flex-start; margin-left:68px; gap:5px; }.approval-error { max-width:100%; margin-left:0; } }
+    @media (max-width:960px) { .title-card { padding:14px; }.title-copy { flex-basis:calc(100% - 70px); }.title-actions { flex:1 0 100%; justify-content:flex-start; margin-left:68px; gap:5px; } }
+    @media (max-width:420px) { .approval-error { right:12px; white-space:normal; } }
 </style>
 </head>
 <body>
@@ -250,5 +253,7 @@
   </script>
 </body>
 </html>
+
+
 
 
